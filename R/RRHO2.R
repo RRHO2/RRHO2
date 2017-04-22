@@ -156,7 +156,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	  
       .filename <- paste("RRHOMap_markH_combined_", labels[1], "_VS_",
                          labels[2], ".pdf", sep = "")
-      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
+	  filename = paste(outputdir, .filename, sep = "/")
+      pdf(filename, ... )
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
@@ -191,7 +192,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	  ## maximum
       .filename <- paste("RRHOMap_markH_fixMax_combined_", labels[1], "_VS_",
                          labels[2], ".pdf", sep = "")
-      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
+      filename = paste(outputdir, .filename, sep = "/")
+      pdf(filename, ... )
+	  
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
@@ -225,7 +228,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	  
       .filename <- paste("RRHOMap_combined_", labels[1], "_VS_",
                          labels[2], ".pdf", sep = "")
-      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
+      filename = paste(outputdir, .filename, sep = "/")
+      pdf(filename, ... )
+	  
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
@@ -247,7 +252,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	  ## maximum
       .filename <- paste("RRHOMap_fixMax_combined_", labels[1], "_VS_",
                          labels[2], ".pdf", sep = "")
-      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
+      filename = paste(outputdir, .filename, sep = "/")
+      pdf(filename, ... )
+	  
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))

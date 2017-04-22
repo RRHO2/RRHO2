@@ -280,7 +280,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                   quote = F, col.names = F)
       .filename <- paste(outputdir, "/RRHO_VennCon", labels[1],
                          "_VS_", labels[2], ".pdf", sep = "")
-      pdf(.filename)
+      pdf(.filename,8,4)
       vp1 <- viewport(x = 0.25, y = 0.5, width = 0.5, height = 0.9)
       vp2 <- viewport(x = 0.75, y = 0.5, width = 0.5, height = 0.9)
       pushViewport(vp1)
@@ -313,7 +313,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	  #
       .filename <- paste(outputdir, "/RRHO_VennDis", labels[1],
                          "_VS_", labels[2], ".pdf", sep = "")
-      pdf(.filename)
+      pdf(.filename,8,4)
       vp1 <- viewport(x = 0.25, y = 0.5, width = 0.5, height = 0.9)
       vp2 <- viewport(x = 0.75, y = 0.5, width = 0.5, height = 0.9)
       pushViewport(vp1)

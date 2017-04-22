@@ -4,12 +4,12 @@ if(F){
 }
 
 library(RRHO2)
-?RRHO2
+# ?RRHO2
 
 setwd('~/Desktop/')
 plotFolder <- 'plot'
 system(paste('mkdir -p', plotFolder))
-list.length <- 10000
+list.length <- 1000
 list.names <- paste('Gene',1:list.length, sep='')
 set.seed(15213)
 gene.list1<- data.frame(list.names, sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))

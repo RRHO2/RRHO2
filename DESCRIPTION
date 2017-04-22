@@ -1,0 +1,13 @@
+Package: RRHO2
+Type: Package
+Title: improved RRHO package
+Version: 1.0
+Date: 2016-12-11
+Author: Zhiguang Huo
+Maintainer: Zhiguang Huo <xiaoguang1988@gmail.com>
+Depends: VennDiagram, R(>= 2.14.1)
+Description: correct the off diagonal part of RRHO plot
+License: GPL-3.0
+RoxygenNote: 5.0.1
+NeedsCompilation: no
+Packaged: 2016-12-11 16:26:22 UTC; 

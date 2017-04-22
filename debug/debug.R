@@ -26,7 +26,6 @@ plots=TRUE
 outputdir=plotFolder
 BY=TRUE
 log10.ind=TRUE
-res=150
 boundary = 0.1
 stepsize = defaultStepSize(list1, list2)
 

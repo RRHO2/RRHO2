@@ -155,9 +155,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	  ################
 	  
       .filename <- paste("RRHOMap_markH_combined_", labels[1], "_VS_",
-                         labels[2], ".tiff", sep = "")
-      tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = 8, height = 8, ... )
+                         labels[2], ".pdf", sep = "")
+      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
@@ -191,9 +190,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
  	  
 	  ## maximum
       .filename <- paste("RRHOMap_markH_fixMax_combined_", labels[1], "_VS_",
-                         labels[2], ".tiff", sep = "")
-      tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = 8, height = 8, ... )
+                         labels[2], ".pdf", sep = "")
+      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
@@ -226,9 +224,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	  ################
 	  
       .filename <- paste("RRHOMap_combined_", labels[1], "_VS_",
-                         labels[2], ".tiff", sep = "")
-      tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = 8, height = 8, ... )
+                         labels[2], ".pdf", sep = "")
+      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
@@ -249,9 +246,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       
 	  ## maximum
       .filename <- paste("RRHOMap_fixMax_combined_", labels[1], "_VS_",
-                         labels[2], ".tiff", sep = "")
-      tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = 8, height = 8, ... )
+                         labels[2], ".pdf", sep = "")
+      pdf(filename = paste(outputdir, .filename, sep = "/"), ... )
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
@@ -276,9 +272,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       write.table(genelist.uu, .filename, row.names = F,
                   quote = F, col.names = F)
       .filename <- paste(outputdir, "/RRHO_VennCon", labels[1],
-                         "_VS_", labels[2], ".tiff", sep = "")
-      tiff(.filename, width = 8.5, height = 5, units = "in",
-            res = res)
+                         "_VS_", labels[2], ".pdf", sep = "")
+      pdf(.filename)
       vp1 <- viewport(x = 0.25, y = 0.5, width = 0.5, height = 0.9)
       vp2 <- viewport(x = 0.75, y = 0.5, width = 0.5, height = 0.9)
       pushViewport(vp1)
@@ -293,11 +288,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       upViewport()
       pushViewport(vp2)
       h2 <- draw.pairwise.venn(length(1:indlist1.uu), length(1:indlist2.uu),
-                               length(genelist.uu), category = c(labels[1],
-                                                                 labels[2]), scaled = TRUE, lwd = c(0, 0), fill = c("cornflowerblue",
-                                                                                                                    "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0,
-                                                                                                                                                                        0), ext.text = FALSE, main = "Negative", ind = FALSE,
-                               cat.dist = 0.01)
+                               length(genelist.uu), category = c(labels[1],labels[2]), 
+							   scaled = TRUE, lwd = c(0, 0), fill = c("cornflowerblue","darkorchid1"), 
+							   cex = 1, cat.cex = 1.2, cat.pos = c(0, 0), ext.text = FALSE, main = "Negative", ind = FALSE,cat.dist = 0.01)
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Up",labels[2]), y = 1)
       dev.off()
@@ -312,9 +305,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                   quote = F, col.names = F)
 	  #
       .filename <- paste(outputdir, "/RRHO_VennDis", labels[1],
-                         "_VS_", labels[2], ".tiff", sep = "")
-      tiff(.filename, width = 8.5, height = 5, units = "in",
-            res = res)
+                         "_VS_", labels[2], ".pdf", sep = "")
+      pdf(.filename)
       vp1 <- viewport(x = 0.25, y = 0.5, width = 0.5, height = 0.9)
       vp2 <- viewport(x = 0.75, y = 0.5, width = 0.5, height = 0.9)
       pushViewport(vp1)

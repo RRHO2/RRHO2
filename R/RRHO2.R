@@ -10,9 +10,10 @@
 ##' @param outputdir Path name where plots ae returned.
 ##' @param BY Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?
 ##' @param log10.ind Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?
-##' @param size Interger. The height and width desired for square RRHO heatmap.  Default size = 8. 
+##' @param size the height and width desired for square RRHO heatmap.  Default size = 8. 
 ##' @param maximum maximum value for a union scale, default is 200.
 ##' @param boundary boundary interval between different quadrant.
+##' @param fill Vector. Vector of two colors for venn diagrams. Default is c("cornflowerblue", "darkorchid1").
 ##' @return list of result
 ##' \item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists.}
 ##' @author Caleb
@@ -33,7 +34,7 @@
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
           labels, plots = FALSE, outputdir = NULL, BY = FALSE,
-          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30, size = 8)
+          log10.ind = FALSE, maximum=200, boundary = 0.05, res=30, size = 8, fill = c("cornflowerblue", "darkorchid1"))
 {
   if (length(list1[, 1]) != length(unique(list1[, 1])))
     stop("Non-unique gene identifier found in list1")

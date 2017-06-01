@@ -196,7 +196,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_markH_fixMax_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size[,1], height = size[,2], units = "in", 
+           width = size[1], height = size[2], units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
@@ -232,7 +232,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size[,1], height = size[,2], units = "in", 
+           width = size[1], height = size[2], units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",

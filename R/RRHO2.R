@@ -141,7 +141,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       color.bar <- function(lut, min, max = -min, nticks = 11,
                             ticks = seq(min, max, len = nticks), title = "") {
         scale <- (length(lut) - 1)/(max - min)
-	      windows.options(width=.2)
+	par(pin = c(.2,max-min))
         plot(c(0, 10), c(min, max), type = "n", bty = "n",
              xaxt = "n", xlab = "", yaxt = "n", ylab = "")
         mtext(title, 2, 2.3, cex = 0.8)

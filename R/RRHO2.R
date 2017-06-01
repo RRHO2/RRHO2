@@ -34,7 +34,7 @@
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
           labels, plots = FALSE, outputdir = NULL, BY = FALSE,
-          log10.ind = FALSE, maximum=200, boundary = 0.05, res=30, size = 8, fill = c("cornflowerblue", "darkorchid1"))
+          log10.ind = FALSE, maximum=200, boundary = 0.05, res=30, size = c(8,8), fill = c("cornflowerblue", "darkorchid1"))
 {
   if (length(list1[, 1]) != length(unique(list1[, 1])))
     stop("Non-unique gene identifier found in list1")
@@ -141,7 +141,6 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       color.bar <- function(lut, min, max = -min, nticks = 11,
                             ticks = seq(min, max, len = nticks), title = "") {
         scale <- (length(lut) - 1)/(max - min)
-	par(pin = c(.2,max-min))
         plot(c(0, 10), c(min, max), type = "n", bty = "n",
              xaxt = "n", xlab = "", yaxt = "n", ylab = "")
         mtext(title, 2, 2.3, cex = 0.8)
@@ -197,7 +196,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_markH_fixMax_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size, height = size, units = "in", 
+           width = size[,1], height = size[,2], units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
@@ -233,7 +232,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size, height = size, units = "in", 
+           width = size[,1], height = size[,2], units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",

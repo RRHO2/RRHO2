@@ -10,6 +10,7 @@
 ##' @param outputdir Path name where plots ae returned.
 ##' @param BY Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?
 ##' @param log10.ind Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?
+##' @param size Interger. The height and width desired for square RRHO heatmap.  Default size = 8. 
 ##' @param maximum maximum value for a union scale, default is 200.
 ##' @param boundary boundary interval between different quadrant.
 ##' @return list of result
@@ -27,7 +28,7 @@
 ##' gene.list2<- data.frame(list.names, sample(100)*sample(c(1,-1),100,replace=TRUE))
 ##' # Enrichment alternative
 ##' RRHO.example <-  RRHO2(gene.list1, gene.list2, 
-##'                       labels=c('x','y'), plots=TRUE, outputdir=plotFolder, BY=TRUE, log10.ind=TRUE)
+##'                       labels=c('x','y'), plots=TRUE, outputdir=plotFolder, BY=TRUE, log10.ind=TRUE, size = 8)
 ##'
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
@@ -291,7 +292,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                category = c(labels[1], labels[2]), scaled = TRUE,
                                lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"),
                                cex = .8, cat.cex = 1.4, cat.pos = c(0, 0), ext.text = FALSE,
-                               ind = FALSE, cat.dist = 0.05)
+                               ind = FALSE, cat.dist = 0.02)
       grid.draw(h1)
       grid.text(paste("Down",labels[1],"Down",labels[2]), y = 1)
       upViewport()
@@ -301,7 +302,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                                                  labels[2]), scaled = TRUE, lwd = c(0, 0), fill = c("cornflowerblue",
                                                                                                                     "darkorchid1"), cex = .8, cat.cex = 1.4, cat.pos = c(0,
                                                                                                                                                                         0), ext.text = FALSE, main = "Negative", ind = FALSE,
-                               cat.dist = 0.05)
+                               cat.dist = 0.02)
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Up",labels[2]), y = 1)
       dev.off()
@@ -327,7 +328,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                category = c(labels[1], labels[2]), scaled = TRUE,
                                lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"),
                                cex = .8, cat.cex = 1.5, cat.pos = c(0, 0), ext.text = FALSE,
-                               ind = FALSE, cat.dist = 0.05)
+                               ind = FALSE, cat.dist = 0.02)
       grid.draw(h1)
       grid.text(paste("Down",labels[1],"Up",labels[2]), y = 1)
       upViewport()
@@ -336,7 +337,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                length(genelist.ud), category = c(labels[1], labels[2]), scaled = TRUE,
 							   lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"), cex = .8, cat.cex = 1.4, cat.pos = c(0, 0), ext.text = FALSE,
 							   main = "Negative", ind = FALSE,
-                               cat.dist = 0.05)
+                               cat.dist = 0.02)
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Down",labels[2]), y = 1)
       dev.off()

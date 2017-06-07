@@ -52,8 +52,8 @@ if(sort == "pv"){
   list2 <- list2[order(list2[, 2], decreasing = TRUE), ]
 }
 if(sort == "es"){
-	list1<-list1[order(es1, decreasing = TRUE)]
-	list2<-list2[order(es2, decreasing = TRUE)] 
+	list1<-list1[order(es1, decreasing = TRUE),]
+	list2<-list2[order(es2, decreasing = TRUE),] 
 	}
   nlist1 <- length(list1[, 1])
   nlist2 <- length(list2[, 1])

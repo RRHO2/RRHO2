@@ -48,7 +48,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                  log10.ind = log10.ind, call = match.call())
   #
 if(sort == "pv"){
-  list1 <- list1[order(list1[, 2], decreasing = TRUE), ]
+  list1 <- list1[order(list1[, 2], decreasing = FALSE), ]
   list2 <- list2[order(list2[, 2], decreasing = TRUE), ]
 }
 if(sort == "es"){

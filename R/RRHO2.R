@@ -10,10 +10,11 @@
 ##' @param outputdir Path name where plots ae returned.
 ##' @param BY Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?
 ##' @param log10.ind Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?
-##' @param size the height and width desired for square RRHO heatmap.  Default size = 8. 
 ##' @param maximum maximum value for a union scale, default is 200.
 ##' @param boundary boundary interval between different quadrant.
-##' @param fill Vector. Vector of two colors for venn diagrams. Default is c("cornflowerblue", "darkorchid1").
+##' @param sort determines whether gene list should be sorted by p-values or effect size
+##' @param es1 effect sizes for first study, only needed when sort = "es" 
+##' @param es2 effect sizes for second study, only needed when sort = "es" 
 ##' @return list of result
 ##' \item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists.}
 ##' @author Caleb
@@ -29,12 +30,12 @@
 ##' gene.list2<- data.frame(list.names, sample(100)*sample(c(1,-1),100,replace=TRUE))
 ##' # Enrichment alternative
 ##' RRHO.example <-  RRHO2(gene.list1, gene.list2, 
-##'                       labels=c('x','y'), plots=TRUE, outputdir=plotFolder, BY=TRUE, log10.ind=TRUE, size = 8)
+##'                       labels=c('x','y'), plots=TRUE, outputdir=plotFolder, BY=TRUE, log10.ind=TRUE)
 ##'
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
           labels, plots = FALSE, outputdir = NULL, BY = FALSE,
-          log10.ind = FALSE, maximum=200, boundary = 0.05, res=30, size = c(8,8), fill = c("cornflowerblue", "darkorchid1"))
+          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30, sort = "pv", es1 =NULL, es2=NULL)
 {
   if (length(list1[, 1]) != length(unique(list1[, 1])))
     stop("Non-unique gene identifier found in list1")
@@ -46,10 +47,14 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                  hypermat.by = NA, n.items = nrow(list1), stepsize = stepsize,
                  log10.ind = log10.ind, call = match.call())
   #
-
+if(sort == "pv"){
   list1 <- list1[order(list1[, 2], decreasing = TRUE), ]
   list2 <- list2[order(list2[, 2], decreasing = TRUE), ]
-
+}
+if(sort == "es"){
+	list1<-list1[order(es1, decreasing = TRUE)]
+	list2<-list2[order(es2, decreasing = TRUE)] 
+	}
   nlist1 <- length(list1[, 1])
   nlist2 <- length(list2[, 1])
 
@@ -159,7 +164,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_markH_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size, height = size, units = "in", 
+           width = 8, height = 8, units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
@@ -196,7 +201,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_markH_fixMax_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size[1], height = size[2], units = "in", 
+           width = 8, height = 8, units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
@@ -232,7 +237,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size[1], height = size[2], units = "in", 
+           width = 8, height = 8, units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
@@ -256,7 +261,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       .filename <- paste("RRHOMap_fixMax_combined_", labels[1], "_VS_",
                          labels[2], ".tiff", sep = "")
       tiff(filename = paste(outputdir, .filename, sep = "/"),
-           width = size, height = size, units = "in", 
+           width = 8, height = 8, units = "in", 
            res = res)
       jet.colors <- colorRampPalette(c("#00007F", "blue",
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
@@ -292,8 +297,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                length(indlist2.dd:nlist2), length(genelist.dd),
                                category = c(labels[1], labels[2]), scaled = TRUE,
                                lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"),
-                               cex = .8, cat.cex = 1.4, cat.pos = c(0, 0), ext.text = FALSE,
-                               ind = FALSE, cat.dist = 0.02)
+                               cex = 1, cat.cex = 1.2, cat.pos = c(0, 0), ext.text = FALSE,
+                               ind = FALSE, cat.dist = 0.01)
       grid.draw(h1)
       grid.text(paste("Down",labels[1],"Down",labels[2]), y = 1)
       upViewport()
@@ -301,9 +306,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       h2 <- draw.pairwise.venn(length(1:indlist1.uu), length(1:indlist2.uu),
                                length(genelist.uu), category = c(labels[1],
                                                                  labels[2]), scaled = TRUE, lwd = c(0, 0), fill = c("cornflowerblue",
-                                                                                                                    "darkorchid1"), cex = .8, cat.cex = 1.4, cat.pos = c(0,
+                                                                                                                    "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0,
                                                                                                                                                                         0), ext.text = FALSE, main = "Negative", ind = FALSE,
-                               cat.dist = 0.02)
+                               cat.dist = 0.01)
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Up",labels[2]), y = 1)
       dev.off()
@@ -328,17 +333,17 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                length(1:indlist2.du), length(genelist.du),
                                category = c(labels[1], labels[2]), scaled = TRUE,
                                lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"),
-                               cex = .8, cat.cex = 1.5, cat.pos = c(0, 0), ext.text = FALSE,
-                               ind = FALSE, cat.dist = 0.02)
+                               cex = 1, cat.cex = 1.2, cat.pos = c(0, 0), ext.text = FALSE,
+                               ind = FALSE, cat.dist = 0.01)
       grid.draw(h1)
       grid.text(paste("Down",labels[1],"Up",labels[2]), y = 1)
       upViewport()
       pushViewport(vp2)
       h2 <- draw.pairwise.venn(length(1:indlist1.ud), length(indlist2.ud:nlist2),
                                length(genelist.ud), category = c(labels[1], labels[2]), scaled = TRUE,
-							   lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"), cex = .8, cat.cex = 1.4, cat.pos = c(0, 0), ext.text = FALSE,
+							   lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0, 0), ext.text = FALSE,
 							   main = "Negative", ind = FALSE,
-                               cat.dist = 0.02)
+                               cat.dist = 0.01)
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Down",labels[2]), y = 1)
       dev.off()

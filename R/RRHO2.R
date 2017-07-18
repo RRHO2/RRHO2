@@ -13,8 +13,6 @@
 ##' @param maximum maximum value for a union scale, default is 200.
 ##' @param boundary boundary interval between different quadrant.
 ##' @param sort determines whether gene list should be sorted by p-values or effect size
-##' @param es1 effect sizes for first study, only needed when sort = "es" 
-##' @param es2 effect sizes for second study, only needed when sort = "es" 
 ##' @return list of result
 ##' \item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists.}
 ##' @author Caleb
@@ -35,7 +33,7 @@
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
           labels, plots = FALSE, outputdir = NULL, BY = FALSE,
-          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30, sort = "pv", es1 =NULL, es2=NULL)
+          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30)
 {
   if (length(list1[, 1]) != length(unique(list1[, 1])))
     stop("Non-unique gene identifier found in list1")
@@ -46,16 +44,10 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
   result <- list(hypermat = NA, hypermat.counts = NA, hypermat.signs = NA,
                  hypermat.by = NA, n.items = nrow(list1), stepsize = stepsize,
                  log10.ind = log10.ind, call = match.call())
-  #
-if(sort == "pv"){
+  
   list1 <- list1[order(list1[, 2], decreasing = TRUE), ]
   list2 <- list2[order(list2[, 2], decreasing = TRUE), ]
-}
-if(sort == "es"){
-	list1<-list1[order(es1, decreasing = TRUE),]
-	list2<-list2[order(es2, decreasing = TRUE),] 
-	}
-	
+
   nlist1 <- length(list1[, 1])
   nlist2 <- length(list2[, 1])
 

@@ -17,14 +17,13 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper"){
   overlap_fisher <- function(a,b) {
     s1 <- sample1[1:a]
     s2 <- sample2[1:b]
-    commonSample <- as.integer(sum(as.numeric(sample1[1:a] %in% sample2[1:b]))) 
+    commonSample <- as.integer(sum(as.numeric(s1 %in% s2))) 
     lenA <- length(commonSample)
     lenB <- length(s1)
     lenC <- length(s2)
-    lenD <- length(sample1)
-    fisherTable <- matrix(c(lenA, lenB-lenA, lenC-lenA, lenD*2 - lenB - lenC + lenA),2,2)
-    fisherResult <- fisher.test(fisherTable,alternative = "greater")
-    logOdds <- log(fisherResult$estimate)
+    
+    Odds <- lenA/(lenB-lenA)/lenC-lenA*(n*2 - lenB - lenC + lenA)
+    logOdds <- log(Odds)
     logOdds[!is.finite(logOdds)] <- sign(logOdds[!is.finite(logOdds)]) * 100
     signs<- 1L
     

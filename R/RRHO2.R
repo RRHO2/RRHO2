@@ -33,7 +33,7 @@
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
           labels, plots = FALSE, outputdir = NULL, BY = FALSE,
-          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30)
+          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30, method="fisher")
 {
   if (length(list1[, 1]) != length(unique(list1[, 1])))
     stop("Non-unique gene identifier found in list1")
@@ -52,9 +52,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
   nlist2 <- length(list2[, 1])
 
   N <- max(nlist1, nlist2)
-  .hypermat_normal <- numericListOverlap(list1[, 1], list2[, 1], stepsize)
+  .hypermat_normal <- numericListOverlap(list1[, 1], list2[, 1], stepsize, method=method)
   hypermat_normal <- .hypermat_normal$log.pval
-  .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize)
+  .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize, method=method)
   hypermat_flipX <- .hypermat_flipX$log.pval
   hypermat_flipX2 <- hypermat_flipX[nrow(hypermat_flipX):1,]
 

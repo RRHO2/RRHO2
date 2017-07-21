@@ -51,8 +51,8 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper"){
 # n<- 112
 # sample1<- sample(n)
 # sample2<- sample(n)  
-# .test<- RRHO:::numericListOverlap(sample1, sample2, 10, method="hyper")
-# .test<- RRHO:::numericListOverlap(sample1, sample2, 10, method="fisher")
+# .test<- numericListOverlap(sample1, sample2, 10, method="hyper")
+# .test<- numericListOverlap(sample1, sample2, 10, method="fisher")
 # dim(.test$log.oval)
 # library(lattice)
 # levelplot(.test$counts)

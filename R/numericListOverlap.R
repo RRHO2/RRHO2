@@ -17,7 +17,7 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper"){
   overlap_fisher <- function(a,b) {
     s1 <- sample1[1:a]
     s2 <- sample2[1:b]
-    commonSample <- intersect(s1, s2)
+    commonSample <- as.integer(sum(as.numeric(sample1[1:a] %in% sample2[1:b]))) 
     lenA <- length(commonSample)
     lenB <- length(s1)
     lenC <- length(s2)

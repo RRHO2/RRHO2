@@ -138,8 +138,6 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                                                     na.rm = TRUE), nticks = 6, title = "-log(P-value)")
       dev.off()   
     })
-    if (length(h2) == 0L)
-      message("Unable to output JPG plots.")
   }
   result$hypermat <- hypermat
   return(result)

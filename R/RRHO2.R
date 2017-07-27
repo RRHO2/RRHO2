@@ -73,9 +73,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 
   hypermat <- matrix(NA,nrow=nrow(hypermat_normal) + lenStrip1,ncol=ncol(hypermat_normal) + lenStrip2)
   hypermat[1:boundary1,1:boundary2] <- hypermat_normal[1:boundary1,1:boundary2] ## u1u2, quadrant III
-	Q3<-hypermat[1:boundary1,1:boundary2]
-	Q3[Q3 == -Inf]<-0
-	hypermat[1:boundary1,boundary2]<-Q3
+	#Q3<-hypermat[1:boundary1,1:boundary2]
+	#Q3[Q3 == -Inf]<-0
+	#hypermat[1:boundary1,boundary2]<-Q3
   hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2] <- hypermat_normal[(boundary1+1):len1,(boundary2+1):len2] ## d1d2, quadrant I
 	Q1 <-  hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2]
 	max<-max(Q1[is.finite(Q1)])

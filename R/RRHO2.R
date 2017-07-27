@@ -73,16 +73,26 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 
   hypermat <- matrix(NA,nrow=nrow(hypermat_normal) + lenStrip1,ncol=ncol(hypermat_normal) + lenStrip2)
   hypermat[1:boundary1,1:boundary2] <- hypermat_normal[1:boundary1,1:boundary2] ## u1u2, quadrant III
+	Q3<-hypermat[1:boundary1,1:boundary2]
+	Q3[Q3 == -Inf]<-0
+	hypermat[1:boundary1,boundary2]<-Q3
   hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2] <- hypermat_normal[(boundary1+1):len1,(boundary2+1):len2] ## d1d2, quadrant I
- 	max<-max(hypermat[is.finite(hypermat)])
-	hypermat[hypermat == Inf] <- max
+	Q1 <-  hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2]
+	max<-max(Q1[is.finite(Q1)])
+	Q1[Q1==Inf]<-max
+	hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2] <- Q1
   hypermat[1:boundary1,lenStrip2 + (boundary2+1):len2] <- hypermat_flipX[len1:(len1 - boundary1 + 1),(boundary2+1):len2] ## u1d2, quadrant II
-  	max<-max(hypermat[is.finite(hypermat)])
-	hypermat[hypermat == Inf] <- max
+	Q2<- hypermat[1:boundary1,lenStrip2 + (boundary2+1):len2]
+	max<-max(Q2[is.finite(Q2)])
+	Q2[Q2 ==Inf] <-max
+        hypermat[1:boundary1,lenStrip2 + (boundary2+1):len2]<-Q2
  hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2] <- hypermat_flipX[(len1 - boundary1):1,1:boundary2] ## u1d2, quadrant IV
-	max<-max(hypermat[is.finite(hypermat)])
-	hypermat[hypermat == Inf] <- max
-
+	Q4<-hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2]
+	max<-max(Q4[is.finite(Q4)])
+	Q4[Q4 == Inf] <- max
+	hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2] <-Q4
+	
+	
   if (log10.ind){
   	hypermat <- hypermat * log10(exp(1))
   }

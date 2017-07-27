@@ -92,7 +92,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	
  hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2] <- hypermat_flipX[(len1 - boundary1):1,1:boundary2] ## u1d2, quadrant IV
 	Q4<-hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2]
-	min<-min(Q4[is.finite(Q4)]
+	min<-min(Q4[is.finite(Q4)])
 	Q4[Q4 == -Inf] <- min
 	hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2] <-Q4
 

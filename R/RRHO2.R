@@ -82,8 +82,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 
   hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2] <- hypermat_normal[(boundary1+1):len1,(boundary2+1):len2] ## d1d2, quadrant I
 	Q1 <-  hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2]
-	max<-max(Q1[is.finite(Q1)])
-	Q1[Q1==Inf]<-max
+	max<-min(Q1[is.finite(Q1)])
+	Q1[Q1==-Inf]<-max
 	hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2] <- Q1
 	
   hypermat[1:boundary1,lenStrip2 + (boundary2+1):len2] <- hypermat_flipX[len1:(len1 - boundary1 + 1),(boundary2+1):len2] ## u1d2, quadrant II

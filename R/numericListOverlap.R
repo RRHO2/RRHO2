@@ -21,7 +21,7 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper"){
     lenB <- length(s1)
     lenC <- length(s2)
     
-    Odds <- (lenA+1)/(lenB-lenA+1)/(lenC-lenA+1)*(n - lenB - lenC + lenA+1)
+    Odds <- (lenA)/(lenB-lenA+1)/(lenC-lenA+1)*(n - lenB - lenC + lenA)
     logOdds <- log(Odds)
     #logOdds[!is.finite(logOdds)] <- sign(logOdds[!is.finite(logOdds)]) * 1000000
     signs<- 1L

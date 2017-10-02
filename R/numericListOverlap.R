@@ -5,7 +5,8 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper"){
   
   overlap_hyper <- function(a,b) {
     count<-as.integer(sum(as.numeric(sample1[1:a] %in% sample2[1:b])))    
-    log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)         
+    log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
+    log.pval[is.na(log.pval)]<-0
     signs<- 1L
     
     return(c(counts=count, 

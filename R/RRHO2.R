@@ -231,9 +231,77 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       dev.off()
   
 	
-	    
-	    
-	    
+	      .filename <- paste(outputdir, "/RRHO_down_",
+                         labels[1], "_VS_down_", labels[2], ".csv", sep = "")
+      write.table(genelist.dd, .filename, row.names = F,
+                  quote = F, col.names = F)
+      .filename <- paste(outputdir, "/RRHO_up_",
+                         labels[1], "_VS_up_", labels[2], ".csv", sep = "")
+      write.table(genelist.uu, .filename, row.names = F,
+                  quote = F, col.names = F)
+      .filename <- paste(outputdir, "/RRHO_VennCon", labels[1],
+                         "_VS_", labels[2], ".tiff", sep = "")
+      tiff(.filename, width = 8.5, height = 5, units = "in",
+            res = res)
+      vp1 <- viewport(x = 0.25, y = 0.5, width = 0.5, height = 0.9)
+      vp2 <- viewport(x = 0.75, y = 0.5, width = 0.5, height = 0.9)
+      pushViewport(vp1)
+      h1 <- draw.pairwise.venn(length(indlist1.dd:nlist1),
+                               length(indlist2.dd:nlist2), length(genelist.dd),
+                               category = c(labels[1], labels[2]), scaled = TRUE,
+                               lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"),
+                               cex = 1, cat.cex = 1.2, cat.pos = c(0, 0), ext.text = FALSE,
+                               ind = FALSE, cat.dist = 0.01)
+      grid.draw(h1)
+      grid.text(paste("Down",labels[1],"Down",labels[2]), y = 1)
+      upViewport()
+      pushViewport(vp2)
+      h2 <- draw.pairwise.venn(length(1:indlist1.uu), length(1:indlist2.uu),
+                               length(genelist.uu), category = c(labels[1],
+                                                                 labels[2]), scaled = TRUE, lwd = c(0, 0), fill = c("cornflowerblue",
+                                                                                                                    "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0,
+                                                                                                                                                                        0), ext.text = FALSE, main = "Negative", ind = FALSE,
+                               cat.dist = 0.01)
+      grid.draw(h2)
+      grid.text(paste("Up",labels[1],"Up",labels[2]), y = 1)
+      dev.off()
+
+      .filename <- paste(outputdir, "/RRHO_down_",
+                         labels[1], "_VS_up_", labels[2], ".csv", sep = "")
+      write.table(genelist.du, .filename, row.names = F,
+                  quote = F, col.names = F)
+      .filename <- paste(outputdir, "/RRHO_up_",
+                         labels[1], "_VS_down_", labels[2], ".csv", sep = "")
+      write.table(genelist.ud, .filename, row.names = F,
+                  quote = F, col.names = F)
+	  #
+      .filename <- paste(outputdir, "/RRHO_VennDis", labels[1],
+                         "_VS_", labels[2], ".tiff", sep = "")
+      tiff(.filename, width = 8.5, height = 5, units = "in",
+            res = res)
+      vp1 <- viewport(x = 0.25, y = 0.5, width = 0.5, height = 0.9)
+      vp2 <- viewport(x = 0.75, y = 0.5, width = 0.5, height = 0.9)
+      pushViewport(vp1)
+      h1 <- draw.pairwise.venn(length(indlist1.du:nlist1),
+                               length(1:indlist2.du), length(genelist.du),
+                               category = c(labels[1], labels[2]), scaled = TRUE,
+                               lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"),
+                               cex = 1, cat.cex = 1.2, cat.pos = c(0, 0), ext.text = FALSE,
+                               ind = FALSE, cat.dist = 0.01)
+      grid.draw(h1)
+      grid.text(paste("Down",labels[1],"Up",labels[2]), y = 1)
+      upViewport()
+      pushViewport(vp2)
+      h2 <- draw.pairwise.venn(length(1:indlist1.ud), length(indlist2.ud:nlist2),
+                               length(genelist.ud), category = c(labels[1], labels[2]), scaled = TRUE,
+							   lwd = c(0, 0), fill = c("cornflowerblue", "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0, 0), ext.text = FALSE,
+							   main = "Negative", ind = FALSE,
+                               cat.dist = 0.01)
+      grid.draw(h2)
+      grid.text(paste("Up",labels[1],"Down",labels[2]), y = 1)
+      dev.off()
+    
+	       
 
     })
   }

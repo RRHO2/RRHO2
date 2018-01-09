@@ -103,10 +103,9 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
         "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
     layout(matrix(c(rep(1,5),2), 1, 6, byrow = TRUE))
     
-    image(hypermat.signed, xlab='', ylab='', col=jet.colors(100), 
+    image(hypermat.signed, xlab='', ylab='', col=jet.colors(101), 
           axes=FALSE,breaks=c(seq(0,maximum,length.out = 101),1e10), main="Rank Rank Hypergeometric Overlap Map")
-    
-        
+      
     mtext(labels[2],2,0.5)
     mtext(labels[1],1,0.5)
     ##mtext(paste("-log(BY P-value) =",max(hypermat.by)),3,0.5,cex=0.5)

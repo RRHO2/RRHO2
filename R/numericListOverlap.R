@@ -59,7 +59,7 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
   }
   
   indexes<- expand.grid(i=seq(1,n,by=stepsize), j=seq(1,n,by=stepsize))
-  if(method=="hyper"&alternative==NULL){
+  if(method=="hyper"){
     overlaps<- apply(indexes, 1, function(x) overlap_hyper(x['i'], x['j']))
     
   } else if(method=="fisher"){

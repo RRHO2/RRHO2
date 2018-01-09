@@ -57,7 +57,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
   .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize, method=method, alternative = alternative)
 	
 	####Add options for old method#####
-	if(alternative == "two.sided" | alternative == "enrichment"){
+	if(alternative = "two.sided" | alternative = "enrichment"){
 		
 if(log10.ind) hypermat<- hypermat *log10(exp(1))  
     
@@ -71,8 +71,6 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
     if(log10.ind) hypermat.by<- hypermat.by *log10(exp(1))
     result$hypermat.by<- hypermat.by
   }
-  
-    
   
   if(plots) {
     try({
@@ -119,7 +117,6 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
               max=max(hypermat.signed[finite.ind], na.rm=TRUE),
               nticks=6,
               title="-log(P-value)")
-    
     dev.off()
     
     ## Make a rank scatter plot
@@ -217,16 +214,14 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
   })
   if(length(h2)==0L) message('Unable to output JPG plots.')
   }
-
-
-
+		
   result$hypermat <- hypermat
   result$hypermat.counts <- .hypermat$counts
   result$hypermat.signs <- .hypermat$signs
   
   return(result)
-}
-} else if(alternative = NULL){
+		
+} else {
 	#####Return to split method###
   hypermat_flipX <- .hypermat_flipX$log.pval
   hypermat_flipX2 <- hypermat_flipX[nrow(hypermat_flipX):1,]

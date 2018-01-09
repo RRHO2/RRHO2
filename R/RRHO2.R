@@ -112,9 +112,9 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
     ##mtext(paste("-log(BY P-value) =",max(hypermat.by)),3,0.5,cex=0.5)
     
     finite.ind<- is.finite(hypermat.signed)
-    color.bar(jet.colors(100),
-              min=0, na.rm=TRUE),
-              max=maximum, na.rm=TRUE),
+    color.bar(jet.colors(101),
+              min=0,
+              max=maximum,
               nticks=6,
               title="-log(P-value)")
     dev.off()

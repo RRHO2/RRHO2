@@ -5,8 +5,6 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
   
   overlap_hyper <- function(a,b) {
     count<-as.integer(sum(as.numeric(sample1[1:a] %in% sample2[1:b])))    
-    log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
-    log.pval[is.na(log.pval)]<-0
     signs<- 1L
     switch(alternative,
            enrichment={
@@ -23,12 +21,15 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
                lower<- 2*the.mean - count 
                upper<- count 
              }
-             
              log.pval<- -log(phyper(q=lower+tol, m=a, n=n-a+1, k=b, lower.tail=TRUE) +
                  phyper(q= upper-tol, m=a, n=n-a+1, k=b, lower.tail=FALSE))                               
            if(as.numeric(log.pval)==Inf){
              log.pval<-0}
-             })
+             },
+          split={
+              log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
+              log.pval[is.na(log.pval)]<-0
+              signs<- 1L})
 
     return(c(counts=count, 
              log.pval=as.numeric(log.pval),

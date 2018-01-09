@@ -33,7 +33,7 @@
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
           labels, plots = FALSE, outputdir = NULL, BY = FALSE,
-          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30, method="fisher")
+          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30, method="fisher", alternative)
 {
   if (length(list1[, 1]) != length(unique(list1[, 1])))
     stop("Non-unique gene identifier found in list1")

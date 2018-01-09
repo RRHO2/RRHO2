@@ -55,6 +55,179 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
   .hypermat_normal <- numericListOverlap(list1[, 1], list2[, 1], stepsize, method=method, alternative = alternative)
   hypermat_normal <- .hypermat_normal$log.pval
   .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize, method=method, alternative = alternative)
+	
+	####Add options for old method#####
+	if(alternative == "two.sided" | alternative == "enrichment"){
+		
+if(log10.ind) hypermat<- hypermat *log10(exp(1))  
+    
+  if(BY){
+    hypermatvec  <- matrix(hypermat,
+                           nrow=nrow(hypermat)*ncol(hypermat),ncol=1)
+    hypermat.byvec  <- p.adjust(exp(-hypermatvec),method="BY")
+    hypermat.by <- matrix(-log(hypermat.byvec),
+                                             nrow=nrow(hypermat),ncol=ncol(hypermat))     
+    
+    if(log10.ind) hypermat.by<- hypermat.by *log10(exp(1))
+    result$hypermat.by<- hypermat.by
+  }
+  
+    
+  
+  if(plots) {
+    try({
+    hypermat.signed<- hypermat * .hypermat$signs 
+    
+    ## Function to plot color bar
+    ## Modified from http://www.colbyimaging.com/wiki/statistics/color-bars
+    color.bar <- function(lut, min, max=-min, 
+                          nticks=11, 
+                          ticks=seq(min, max, len=nticks), 
+                          title='') {
+      scale  <- (length(lut)-1)/(max-min)
+      plot(c(0,10), c(min,max), type='n', bty='n', 
+           xaxt='n', xlab='', yaxt='n', ylab='')
+      mtext(title,2,2.3, cex=0.8)
+      axis(2, round(ticks,0), las=1,cex.lab=0.8)
+      for (i in 1:(length(lut)-1)) {
+        y  <- (i-1)/scale + min
+        rect(0,y,10,y+1/scale, col=lut[i], border=NA)
+      }
+    }
+    
+    .filename <-paste("RRHOMap", labels[1], "_VS_", labels[2], ".jpg", sep="") 
+    jpeg(filename = paste(outputdir,.filename,sep="/"), 
+         width=8, height=8, 
+         units="in", quality=100, res=150)
+    
+    jet.colors  <- colorRampPalette(
+      c("#00007F", "blue", "#007FFF", "cyan", 
+        "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+    layout(matrix(c(rep(1,5),2), 1, 6, byrow = TRUE))
+    
+    image(hypermat.signed, xlab='', ylab='', col=jet.colors(100), 
+          axes=FALSE, main="Rank Rank Hypergeometric Overlap Map")
+    
+        
+    mtext(labels[2],2,0.5)
+    mtext(labels[1],1,0.5)
+    ##mtext(paste("-log(BY P-value) =",max(hypermat.by)),3,0.5,cex=0.5)
+    
+    finite.ind<- is.finite(hypermat.signed)
+    color.bar(jet.colors(100),
+              min=min(hypermat.signed[finite.ind], na.rm=TRUE),
+              max=max(hypermat.signed[finite.ind], na.rm=TRUE),
+              nticks=6,
+              title="-log(P-value)")
+    
+    dev.off()
+    
+    ## Make a rank scatter plot
+    list2ind  <- match(list1[,1],list2[,1])
+    list1ind  <- 1:nlist1
+    corval  <- cor(list1ind,list2ind,method="spearman")
+    .filename <-paste("RankScatter",labels[1],"_VS_",labels[2],".jpg",sep="") 
+    jpeg(paste(outputdir,.filename,sep="/"), width=8, 
+         height=8, units="in", quality=100, res=150)
+    plot(list1ind,list2ind,xlab=paste(labels[1],"(Rank)"), 
+         ylab=paste(labels[2],"(Rank)"), pch=20, 
+         main=paste(
+           "Rank-Rank Scatter (rho = ",signif(corval,digits=3),")"
+           ,sep=""), cex=0.5)
+    ## TODO: Replace linear fit with LOESS
+    model  <- lm(list2ind~list1ind)
+    lines(predict(model),col="red",lwd=3)
+    dev.off()
+    
+    ## Make a Venn Diagram for the most significantly associated points
+    ## Upper Right Corner (Downregulated in both)
+    maxind.ur  <- which(
+      max(hypermat.signed[ceiling(nrow(hypermat.signed)/2):nrow(hypermat.signed),
+                   ceiling(ncol(hypermat.signed)/2):ncol(hypermat.signed)],
+          na.rm=TRUE) == hypermat.signed, 
+      arr.ind=TRUE)
+    indlist1.ur  <- seq(1,nlist1,stepsize)[maxind.ur[1]]
+    indlist2.ur  <- seq(1,nlist2,stepsize)[maxind.ur[2]]
+    genelist.ur  <- intersect(
+      list1[indlist1.ur:nlist1,1],
+      list2[indlist2.ur:nlist2,1])
+    ## Lower Right corner (Upregulated in both)
+    maxind.lr  <- which(
+      max(hypermat.signed[1:(ceiling(nrow(hypermat.signed)/2)-1), 
+                   1:(ceiling(ncol(hypermat.signed)/2)-1)],
+          na.rm=TRUE) == hypermat.signed, arr.ind=TRUE)
+    indlist1.lr  <- seq(1,nlist1,stepsize)[maxind.lr[1]]
+    indlist2.lr  <- seq(1,nlist2,stepsize)[maxind.lr[2]]
+    genelist.lr  <- intersect(
+      list1[1:indlist1.lr,1], 
+      list2[1:indlist2.lr,1])
+    
+    ## Write out the gene lists of overlapping
+    .filename <- paste(
+      outputdir,"/RRHO_GO_MostDownregulated",labels[1],"_VS_",labels[2],".csv",
+      sep="")
+    write.table(genelist.ur,.filename,row.names=F,quote=F,col.names=F)
+    .filename <- paste(
+      outputdir,"/RRHO_GO_MostUpregulated",labels[1],"_VS_",labels[2],".csv",
+      sep="")
+    write.table(genelist.lr,.filename,row.names=F,quote=F,col.names=F)
+    
+    .filename <- paste(
+      outputdir,"/RRHO_VennMost",labels[1],"__VS__",labels[2],".jpg", 
+      sep="")
+    jpeg(.filename,width=8.5,height=5,units="in",quality=100,res=150)
+    vp1  <- viewport(x=0.25,y=0.5,width=0.5,height=0.9)
+    vp2  <- viewport(x=0.75,y=0.5,width=0.5,height=0.9)
+    
+    pushViewport(vp1)
+    h1  <- draw.pairwise.venn(length(indlist1.ur:nlist1),
+                              length(indlist2.ur:nlist2),
+                              length(genelist.ur), 
+                              category=c(labels[1],labels[2]),
+                              scaled=TRUE,
+                              lwd=c(0,0),
+                              fill=c("cornflowerblue", "darkorchid1"),
+                              cex=1,
+                              cat.cex=1.2,
+                              cat.pos=c(0,0),
+                              ext.text=FALSE,
+                              ind=FALSE,
+                              cat.dist=0.01)
+    grid.draw(h1)
+    grid.text("Down Regulated",y=1)
+    upViewport()
+    pushViewport(vp2)
+    h2  <-  draw.pairwise.venn(length(1:indlist1.lr),
+                               length(1:indlist2.lr),
+                               length(genelist.lr),
+                               category=c(labels[1],labels[2]),
+                               scaled=TRUE,
+                               lwd=c(0,0),
+                               fill=c("cornflowerblue", "darkorchid1"),
+                               cex=1,
+                               cat.cex=1.2,
+                               cat.pos=c(0,0),
+                               ext.text=FALSE,
+                               main="Negative",
+                               ind=FALSE,
+                               cat.dist=0.01)
+    grid.draw(h2)
+    grid.text("Up Regulated",y=1)
+    dev.off()
+  })
+  if(length(h2)==0L) message('Unable to output JPG plots.')
+  }
+
+
+
+  result$hypermat <- hypermat
+  result$hypermat.counts <- .hypermat$counts
+  result$hypermat.signs <- .hypermat$signs
+  
+  return(result)
+}
+}elseif(alternative = NULL){
+	#####Return to split method###
   hypermat_flipX <- .hypermat_flipX$log.pval
   hypermat_flipX2 <- hypermat_flipX[nrow(hypermat_flipX):1,]
 
@@ -307,4 +480,5 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
   }
   result$hypermat <- hypermat
   return(result)
+}
 }

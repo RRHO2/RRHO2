@@ -223,6 +223,7 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
 		
 } else {
 	#####Return to split method###
+ .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize, method=method, alternative = alternative)
   hypermat_flipX <- .hypermat_flipX$log.pval
   hypermat_flipX2 <- hypermat_flipX[nrow(hypermat_flipX):1,]
 

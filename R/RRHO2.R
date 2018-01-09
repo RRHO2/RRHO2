@@ -226,7 +226,7 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
   
   return(result)
 }
-}elseif(alternative = NULL){
+} else if(alternative = NULL){
 	#####Return to split method###
   hypermat_flipX <- .hypermat_flipX$log.pval
   hypermat_flipX2 <- hypermat_flipX[nrow(hypermat_flipX):1,]

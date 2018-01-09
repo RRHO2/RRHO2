@@ -1,6 +1,6 @@
 
 ## Compute the overlaps between two *numeric* lists:
-numericListOverlap<- function(sample1, sample2, stepsize, method="hyper"){
+numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", alternative){
   n<- length(sample1)
   
   overlap_hyper <- function(a,b) {
@@ -8,7 +8,28 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper"){
     log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
     log.pval[is.na(log.pval)]<-0
     signs<- 1L
-    
+    switch(alternative,
+           enrichment={
+             log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)         
+             signs<- 1L
+           },
+           two.sided={
+             the.mean<- a*b/n
+             signs<- sign(count - the.mean)
+             if(signs < 0){
+               lower<- count 
+               upper<- 2*the.mean - count 
+             } else{
+               lower<- 2*the.mean - count 
+               upper<- count 
+             }
+             
+             log.pval<- -log(phyper(q=lower+tol, m=a, n=n-a+1, k=b, lower.tail=TRUE) +
+                 phyper(q= upper-tol, m=a, n=n-a+1, k=b, lower.tail=FALSE))                               
+           if(as.numeric(log.pval)==Inf){
+             log.pval<-0}
+             })
+
     return(c(counts=count, 
              log.pval=as.numeric(log.pval),
              signs=as.integer(signs)

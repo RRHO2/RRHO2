@@ -71,7 +71,7 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
   matrix.log.pvals<- matrix(overlaps['log.pval',], ncol=nrows)  
   matrix.signs<- matrix(overlaps['signs',], ncol=nrows)  
   
-  return(list(counts=matrix.counts, log.pval=matrix.log.pvals))
+  return(list(counts=matrix.counts, log.pval=matrix.log.pvals, signs = matrix.signs))
 }
 ### Testing:
 # n<- 112

@@ -1,6 +1,6 @@
 
 ## Compute the overlaps between two *numeric* lists:
-numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", alternative){
+numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", alternative, tol = 0.5){
   n<- length(sample1)
   
   overlap_hyper <- function(a,b) {

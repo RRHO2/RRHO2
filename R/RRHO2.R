@@ -53,7 +53,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 
   N <- max(nlist1, nlist2)
   .hypermat<- numericListOverlap(list1[, 1], list2[, 1], stepsize, method=method, alternative = alternative)
-  hypermat<- .hypermat_normal$log.pval
+  hypermat<- .hypermat$log.pval
   .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize, method=method, alternative = alternative)
 	
 	####Add options for old method#####

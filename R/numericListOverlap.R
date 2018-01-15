@@ -23,7 +23,7 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
              }
              log.pval<- -log(phyper(q=lower+tol, m=a, n=n-a+1, k=b, lower.tail=TRUE) +
                  phyper(q= upper-tol, m=a, n=n-a+1, k=b, lower.tail=FALSE))                               
-           if(as.numeric(log.pval)==Inf){
+           if(as.numeric(log.pval)==Inf|as.numeric(log.pval)==-Inf){
              log.pval<-0}
              },
           split={

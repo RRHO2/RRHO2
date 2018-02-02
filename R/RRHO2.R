@@ -296,9 +296,13 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
 
   indlist1.du <- seq(1, nlist1, stepsize)[maxind.du[1] - lenStrip1]
   indlist2.du <- seq(1, nlist2, stepsize)[maxind.du[2]]
+		if(is.na(indlist2.du) == TRUE){
+			indlist2.du<-max(seq(1, nlist2, stepsize))
   genelist.du <- intersect(list1[indlist1.du:nlist1, 1],
                            list2[1:indlist2.du, 1])
-   
+   if(is.na(indlist2.du) == TRUE)){
+	   indlist2.du<-max(seq(1, nlist2, stepsize))
+	   }
   if (plots) {
     try({
       color.bar <- function(lut, min, max = -min, nticks = 11,

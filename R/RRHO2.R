@@ -291,9 +291,6 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 
   indlist1.ud <- seq(1, nlist1, stepsize)[maxind.ud[1]]
   indlist2.ud <- seq(1, nlist2, stepsize)[maxind.ud[2] - lenStrip2]
-		if(is.na(indlist2.ud) == TRUE){
-			indlist2.ud<-max(seq(1, nlist2, stepsize))
-			}
   genelist.ud <- intersect(list1[1:indlist1.ud,
                                  1], list2[indlist2.ud:nlist2, 1])
   maxind.du <- which(max(hypermat[lenStrip1 + (boundary1+1):len1, 1:boundary2],

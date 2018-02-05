@@ -59,8 +59,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
 	####Add options for old method#####
 	if(alternative == "two.sided" | alternative == "enrichment"){
 		
-if(log10.ind) hypermat<- hypermat *log10(exp(1))  
-    
+  if (log10.ind){
+  	hypermat <- hypermat * log10(exp(1))
+  }    
   if(BY){
     hypermatvec  <- matrix(hypermat,
                            nrow=nrow(hypermat)*ncol(hypermat),ncol=1)
@@ -298,11 +299,9 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
   indlist2.du <- seq(1, nlist2, stepsize)[maxind.du[2]]
 		if(is.na(indlist2.du) == TRUE){
 			indlist2.du<-max(seq(1, nlist2, stepsize))
+			}
   genelist.du <- intersect(list1[indlist1.du:nlist1, 1],
                            list2[1:indlist2.du, 1])
-   #if(is.na(indlist2.du) == TRUE){
-#	   indlist2.du<-max(seq(1, nlist2, stepsize))
-#	   }
   if (plots) {
     try({
       color.bar <- function(lut, min, max = -min, nticks = 11,
@@ -398,16 +397,16 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
 	  segments(x0 = -0.2,x1 = 1.2,y0 = boundary2/len2,y1 = boundary2/len2,lwd=4,col='white')	  
 	  x1.dd <- (maxind.dd[1] - 1)/(nrow(hypermat) - 1)
 	  x2.dd <- (maxind.dd[2] - 1)/(ncol(hypermat) - 1)
-	  #points(x1.dd,x2.dd,pch=18,cex=4)	  	  
+	  points(x1.dd,x2.dd,pch=18,cex=4)	  	  
 	  x1.uu <- (maxind.uu[1] - 1)/(nrow(hypermat) - 1)
 	  x2.uu <- (maxind.uu[2] - 1)/(ncol(hypermat) - 1)
-	  #points(x1.uu,x2.uu,pch=18,cex=4)	  	  
+	  points(x1.uu,x2.uu,pch=18,cex=4)	  	  
 	  x1.ud <- (maxind.ud[1] - 1)/(nrow(hypermat) - 1)
 	  x2.ud <- (maxind.ud[2] - 1)/(ncol(hypermat) - 1)
-	  #points(x1.ud,x2.ud,pch=18,cex=4)	  	  
+	  points(x1.ud,x2.ud,pch=18,cex=4)	  	  
 	  x1.du <- (maxind.du[1] - 1)/(nrow(hypermat) - 1)
 	  x2.du <- (maxind.du[2] - 1)/(ncol(hypermat) - 1)
-	  #points(x1.du,x2.du,pch=18,cex=4)	  	  
+	  points(x1.du,x2.du,pch=18,cex=4)	  	  
       mtext(labels[2], 2, 0.5)
       mtext(labels[1], 1, 0.5)
       finite.ind <- is.finite(hypermat)
@@ -464,9 +463,7 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
       h2 <- draw.pairwise.venn(length(1:indlist1.uu), length(1:indlist2.uu),
                                length(genelist.uu), category = c(labels[1],
                                                                  labels[2]), scaled = TRUE, lwd = c(0, 0), fill = c("cornflowerblue",
-                                                                                                                    "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0,
-                                                                                                                                                                        0), ext.text = FALSE, main = "Negative", ind = FALSE,
-                               cat.dist = 0.01)
+                                                                                                                    "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0,cat.dist = 0.01)
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Up",labels[2]), y = 1)
       dev.off()
@@ -479,7 +476,7 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
                          labels[1], "_VS_down_", labels[2], ".csv", sep = "")
       write.table(genelist.ud, .filename, row.names = F,
                   quote = F, col.names = F)
-	  #
+	  
       .filename <- paste(outputdir, "/RRHO_VennDis", labels[1],
                          "_VS_", labels[2], ".tiff", sep = "")
       tiff(.filename, width = 8.5, height = 5, units = "in",
@@ -505,9 +502,6 @@ if(log10.ind) hypermat<- hypermat *log10(exp(1))
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Down",labels[2]), y = 1)
       dev.off()
-    
-	       
-
     })
   }
   result$hypermat <- hypermat

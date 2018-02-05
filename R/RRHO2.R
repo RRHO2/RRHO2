@@ -463,7 +463,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       h2 <- draw.pairwise.venn(length(1:indlist1.uu), length(1:indlist2.uu),
                                length(genelist.uu), category = c(labels[1],
                                                                  labels[2]), scaled = TRUE, lwd = c(0, 0), fill = c("cornflowerblue",
-                                                                                                                    "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0,cat.dist = 0.01)
+                                                                                                                    "darkorchid1"), cex = 1, cat.cex = 1.2, cat.pos = c(0,0), cat.dist = 0.01)
       grid.draw(h2)
       grid.text(paste("Up",labels[1],"Up",labels[2]), y = 1)
       dev.off()

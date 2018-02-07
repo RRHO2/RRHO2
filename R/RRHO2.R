@@ -52,12 +52,10 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
   nlist2 <- length(list2[, 1])
 
   N <- max(nlist1, nlist2)
-  .hypermat<- numericListOverlap(list1[, 1], list2[, 1], stepsize, method=method, alternative = alternative)
-  hypermat<- .hypermat$log.pval
-  .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize, method=method, alternative = alternative)
-	
-	####Add options for old method#####
+ 	####Add options for old method#####
 	if(alternative == "two.sided" | alternative == "enrichment"){
+ .hypermat<- numericListOverlap(list1[, 1], list2[, 1], stepsize, method=method, alternative = alternative)
+  hypermat<- .hypermat$log.pval
 		
   if (log10.ind){
   	hypermat <- hypermat * log10(exp(1))

@@ -25,8 +25,6 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
                  phyper(q= upper-tol, m=a, n=n-a+1, k=b, lower.tail=FALSE))   
              max<-log.pval[is.finite(log.pval)==TRUE]
             log.pval[!is.finite(log.pval)]<-maximum
-             if(as.numeric(log.pval*signs)<0){
-               signs<-1} #need to fix later 
              },
           split={
               log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    

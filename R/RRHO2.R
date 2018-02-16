@@ -103,7 +103,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     layout(matrix(c(rep(1,5),2), 1, 6, byrow = TRUE))
     
     image(hypermat.signed, xlab='', ylab='', col=jet.colors(101), 
-          axes=FALSE,breaks=c(seq(0,maximum,length.out = 101),1e10), main="Rank Rank Hypergeometric Overlap Map")
+          axes=FALSE,breaks=c(seq(-maximum,maximum,length.out = 101),1e10), main="Rank Rank Hypergeometric Overlap Map") #might need to have different options for two sided/enrichment
       
     mtext(labels[2],2,0.5)
     mtext(labels[1],1,0.5)

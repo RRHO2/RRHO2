@@ -111,7 +111,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     
     finite.ind<- is.finite(hypermat.signed)
     color.bar(jet.colors(101),
-              min=0,
+              min=-maximum, #again might need different options for different methods 
               max=maximum,
               nticks=6,
               title="-log(P-value)")

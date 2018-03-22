@@ -23,6 +23,8 @@ RRHO2(list1, list2, stepsize = defaultStepSize(list1, list2), labels,
 \item{BY}{Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?}
 
 \item{log10.ind}{Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?}
+\item{method}{character. "fisher" uses odds ratio implementation, "hyper" uses pvalue}
+\item{alternative}{character. "split" uses new stratified algorithm, "enrichment" and "two-sided" use original RRHO implementations}
 \item{size}{Controls the height and width of the square dimensions of the heatmap. Default is 8.} 
 \item{fill}{Vector. Vector of two colors for venn diagrams. Default is c("cornflowerblue", "darkorchid1").}
 }

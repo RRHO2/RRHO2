@@ -11,8 +11,10 @@
 ##' @param BY Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?
 ##' @param log10.ind Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?
 ##' @param maximum maximum value for a union scale, default is 200.
+##' @param alternative RRHO algorithm "split" gives the new stratified representation, "enrichment" and "two-sided" refer to the original RRHO implementations
 ##' @param boundary boundary interval between different quadrant.
 ##' @param sort determines whether gene list should be sorted by p-values or effect size
+##' @param method method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value 
 ##' @return list of result
 ##' \item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists.}
 ##' @author Caleb

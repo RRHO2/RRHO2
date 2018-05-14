@@ -49,6 +49,7 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
       Odds <- 1
       }
     logOdds <- log(abs(Odds))*sign(Odds)
+    logOdds[Odds == 0]<- -maximum 
                 #logOdds[logOdds<0]<- -maximum
     
     #logOdds[!is.finite(logOdds)] <- sign(logOdds[!is.finite(logOdds)]) * 100

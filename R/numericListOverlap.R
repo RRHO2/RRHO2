@@ -44,7 +44,8 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
     lenB <- length(s1)
     lenC <- length(s2)
     
-    Odds <- lenA/(lenB-lenA)/(lenC-lenA)*(n - lenB - lenC + lenA)
+    #Odds <- lenA/(lenB-lenA)/(lenC-lenA)*(n - lenB - lenC + lenA)
+    Odds<-((lenA)*(n-lenB-lenC+lenA))/((lenC-lenA)*(lenB-lenA))
     if(Odds == 0){
       Odds <- 1
       }

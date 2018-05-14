@@ -441,7 +441,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       mtext(labels[2], 2, 0.5)
       mtext(labels[1], 1, 0.5)
       finite.ind <- is.finite(hypermat)
-      color.bar(jet.colors(101), min = -maximum, max = maximum, nticks = 6, title = "-log(P-value)")
+      color.bar(jet.colors(101), min = 0, max = maximum, nticks = 6, title = "-log(P-value)")
       dev.off()
 
 	

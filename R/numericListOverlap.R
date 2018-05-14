@@ -52,6 +52,12 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
     if(is.na(Odds) == TRUE){ 
       Odds <- 1 
       } 
+    if(Odds == Inf){
+      Odds<-maximum
+      }
+    if(Odds == -Inf){
+      Odds <- 0
+      }
     logOdds <- log(abs(Odds))*sign(Odds)
     #logOdds[Odds == 0]<- maximum 
     #logOdds[logOdds<0]<- -maximum

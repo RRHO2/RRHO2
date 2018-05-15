@@ -434,7 +434,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                                        "#007FFF", "cyan", "#7FFF7F", "yellow", "#FF7F00",
                                        "red", "#7F0000"))
       layout(matrix(c(rep(1, 5), 2), 1, 6, byrow = TRUE))
-      image(hypermat, xlab = "", ylab = "", col = jet.colors(101),breaks=c(seq(-maximum,maximum,length.out = 101),1e10),
+      image(hypermat, xlab = "", ylab = "", col = jet.colors(101),breaks=c(seq(0,maximum,length.out = 101),1e10),
             axes = FALSE, main = "Rank Rank Hypergeometric Overlap Map")
 	  segments(x0 = boundary1/len1 ,x1 = boundary1 /len1 ,y0 = -0.2,y1 = 1.2,lwd=4,col='white')
 	  segments(x0 = -0.2,x1 = 1.2,y0 = boundary2/len2,y1 = boundary2/len2,lwd=4,col='white')	  

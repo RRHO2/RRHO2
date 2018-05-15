@@ -106,26 +106,28 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     
     #image(hypermat.signed, xlab='', ylab='', col=jet.colors(101), 
      #     axes=FALSE,breaks=c(seq(-maximum,maximum,length.out = 101),1e10), main="Rank Rank Hypergeometric Overlap Map") #might need to have different options for two sided/enrichment
-    image(hypermat.signed, xlab='', ylab='', col=jet.colors(100), 
-          axes=FALSE, main="Rank Rank Hypergeometric Overlap Map")
-      
+    #image(hypermat.signed, xlab='', ylab='', col=jet.colors(100), 
+     #     axes=FALSE, main="Rank Rank Hypergeometric Overlap Map")
+      image(hypermat.signed, xlab = "", ylab = "", col = jet.colors(101),breaks=c(seq(0,maximum,length.out = 101),1e10),
+            axes = FALSE, main = "Rank Rank Hypergeometric Overlap Map")
+	 
     mtext(labels[2],2,0.5)
     mtext(labels[1],1,0.5)
     ##mtext(paste("-log(BY P-value) =",max(hypermat.by)),3,0.5,cex=0.5)
     
     finite.ind<- is.finite(hypermat.signed)
+	 color.bar(jet.colors(101), min = 0, max = maximum, nticks = 6, title = "-log(P-value)")
     #color.bar(jet.colors(101),
      #         min=-maximum, #again might need different options for different methods 
       #        max=maximum,
        #      nticks=6,
         #      title="-log(P-value)")
-	     color.bar(jet.colors(100),
-              min=min(hypermat.signed[finite.ind], na.rm=TRUE),
-              max=max(hypermat.signed[finite.ind], na.rm=TRUE),
-              nticks=6,
-              title="-log(P-value)")    
+	     #color.bar(jet.colors(100),
+             # min=min(hypermat.signed[finite.ind], na.rm=TRUE),
+              #max=max(hypermat.signed[finite.ind], na.rm=TRUE),
+              #nticks=6,
+              #title="-log(P-value)")    
     dev.off()
-    
     ## Make a rank scatter plot
     list2ind  <- match(list1[,1],list2[,1])
     list1ind  <- 1:nlist1

@@ -96,14 +96,15 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     
     .filename <-paste("RRHOMap", labels[1], "_VS_", labels[2], ".jpg", sep="") 
     jpeg(filename = paste(outputdir,.filename,sep="/"), 
-         width=8, height=8, 
+         width=6.5, height=6, 
          units="in", quality=100, res=150)
     
     jet.colors  <- colorRampPalette(
       c("#00007F", "blue", "#007FFF", "cyan", 
         "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
-    layout(matrix(c(rep(1,5),2), 1, 6, byrow = TRUE))
-    
+    #layout(matrix(c(rep(1,5),2), 1, 6, byrow = TRUE))
+    	layout(matrix(c(rep(1, 6), 2), 1, 7, byrow = TRUE))
+
     #image(hypermat.signed, xlab='', ylab='', col=jet.colors(101), 
      #     axes=FALSE,breaks=c(seq(-maximum,maximum,length.out = 101),1e10), main="Rank Rank Hypergeometric Overlap Map") #might need to have different options for two sided/enrichment
     #image(hypermat.signed, xlab='', ylab='', col=jet.colors(100), 

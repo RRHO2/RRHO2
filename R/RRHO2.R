@@ -94,8 +94,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
       }
     }
     
-    .filename <-paste("RRHOMap", labels[1], "_VS_", labels[2], ".jpg", sep="") 
-    jpeg(filename = paste(outputdir,.filename,sep="/"), 
+    .filename <-paste("RRHOMap", labels[1], "_VS_", labels[2], ".tiff", sep="") 
+    tiff(filename = paste(outputdir,.filename,sep="/"), 
          width=6.5, height=6, 
          units="in", quality=100, res=150)
     

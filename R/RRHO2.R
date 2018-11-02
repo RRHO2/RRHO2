@@ -148,6 +148,8 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     
     ## Make a Venn Diagram for the most significantly associated points
     ## Upper Right Corner (Downregulated in both)
+     ## Make a Venn Diagram for the most significantly associated points
+    ## Upper Right Corner (Downregulated in both)
     maxind.ur  <- which(
       max(hypermat.signed[ceiling(nrow(hypermat.signed)/2):nrow(hypermat.signed),
                    ceiling(ncol(hypermat.signed)/2):ncol(hypermat.signed)],
@@ -173,11 +175,11 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     .filename <- paste(
       outputdir,"/RRHO_GO_MostDownregulated",labels[1],"_VS_",labels[2],".csv",
       sep="")
-    write.table(genelist.lr,.filename,row.names=F,quote=F,col.names=F)
+    write.table(genelist.ur,.filename,row.names=F,quote=F,col.names=F)
     .filename <- paste(
       outputdir,"/RRHO_GO_MostUpregulated",labels[1],"_VS_",labels[2],".csv",
       sep="")
-    write.table(genelist.ur,.filename,row.names=F,quote=F,col.names=F)
+    write.table(genelist.lr,.filename,row.names=F,quote=F,col.names=F)
     
     .filename <- paste(
       outputdir,"/RRHO_VennMost",labels[1],"__VS__",labels[2],".jpg", 

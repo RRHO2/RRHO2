@@ -175,11 +175,11 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     .filename <- paste(
       outputdir,"/RRHO_GO_MostDownregulated",labels[1],"_VS_",labels[2],".csv",
       sep="")
-    write.table(genelist.lr,.filename,row.names=F,quote=F,col.names=F)
+    write.table(genelist.ur,.filename,row.names=F,quote=F,col.names=F)
     .filename <- paste(
       outputdir,"/RRHO_GO_MostUpregulated",labels[1],"_VS_",labels[2],".csv",
       sep="")
-    write.table(genelist.ur,.filename,row.names=F,quote=F,col.names=F)
+    write.table(genelist.lr,.filename,row.names=F,quote=F,col.names=F)
     
     .filename <- paste(
       outputdir,"/RRHO_VennMost",labels[1],"__VS__",labels[2],".jpg", 

@@ -17,7 +17,7 @@
 ##' @param method method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value 
 ##' @return list of result
 ##' \item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists.}
-##' @author Caleb
+##' @author Kelly and Caleb
 ##' @export
 ##' @examples
 ##' 
@@ -35,7 +35,7 @@
 
 RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
           labels, plots = FALSE, outputdir = NULL, BY = FALSE,
-          log10.ind = FALSE, maximum=200, boundary = 0.1, res=30, method="fisher", alternative)
+          log10.ind = FALSE, maximum=200, boundary = 0.1, res=100, method="fisher", alternative="split")
 {
   if (length(list1[, 1]) != length(unique(list1[, 1])))
     stop("Non-unique gene identifier found in list1")

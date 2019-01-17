@@ -5,7 +5,9 @@
 \title{RRHO2}
 \usage{
 RRHO2(list1, list2, stepsize = defaultStepSize(list1, list2), labels,
-  plots = FALSE, outputdir = NULL, BY = FALSE, log10.ind = FALSE)
+  plots = FALSE, outputdir = NULL, BY = FALSE, log10.ind = FALSE,
+  maximum = 50, boundary = 0.1, res = 100, method = "fisher",
+  alternative = "split")
 }
 \arguments{
 \item{list1}{data.frame. First column is the element (possibly gene) identifier, and the second is its value on which to sort. For differential gene expression, values are often -log10(P-value) * sign(effect).}
@@ -23,10 +25,16 @@ RRHO2(list1, list2, stepsize = defaultStepSize(list1, list2), labels,
 \item{BY}{Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?}
 
 \item{log10.ind}{Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?}
-\item{method}{character. "fisher" uses odds ratio implementation, "hyper" uses pvalue}
-\item{alternative}{character. "split" uses new stratified algorithm, "enrichment" and "two-sided" use original RRHO implementations}
-\item{size}{Controls the height and width of the square dimensions of the heatmap. Default is 8.} 
-\item{fill}{Vector. Vector of two colors for venn diagrams. Default is c("cornflowerblue", "darkorchid1").}
+
+\item{maximum}{maximum value for a union scale, default is 200.}
+
+\item{boundary}{boundary interval between different quadrant.}
+
+\item{method}{method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value}
+
+\item{alternative}{RRHO algorithm "split" gives the new stratified representation, "enrichment" and "two-sided" refer to the original RRHO implementations}
+
+\item{sort}{determines whether gene list should be sorted by p-values or effect size}
 }
 \value{
 list of result
@@ -42,17 +50,16 @@ We improved the algorithm such that all four regions of RRHO plot are meaningful
 
 plotFolder <- 'plot'
 system(paste('mkdir -p', plotFolder))
-list.length <- 100
+list.length <- 2000
 list.names <- paste('Gene',1:list.length, sep='')
 set.seed(15213)
-gene.list1<- data.frame(list.names, sample(100)*sample(c(1,-1),100,replace=TRUE))
-gene.list2<- data.frame(list.names, sample(100)*sample(c(1,-1),100,replace=TRUE))
+gene.list1<- data.frame(list.names, sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
+gene.list2<- data.frame(list.names, sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
 # Enrichment alternative
 RRHO.example <-  RRHO2(gene.list1, gene.list2, 
                       labels=c('x','y'), plots=TRUE, outputdir=plotFolder, BY=TRUE, log10.ind=TRUE)
 
 }
 \author{
-Caleb
+Kelly and Caleb
 }
-

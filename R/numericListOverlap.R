@@ -22,15 +22,15 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
                upper<- count 
              }
              log.pval<- -log(phyper(q=lower+tol, m=a, n=n-a+1, k=b, lower.tail=TRUE) +
-                 phyper(q= upper-tol, m=a, n=n-a+1, k=b, lower.tail=FALSE))   
+                               phyper(q= upper-tol, m=a, n=n-a+1, k=b, lower.tail=FALSE))   
              #max<-log.pval[is.finite(log.pval)==TRUE]
-            log.pval[!is.finite(log.pval)]<- maximum
-             },
-          split={
-              log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
-              log.pval[is.na(log.pval)]<-0
-              signs<- 1L})
-
+             log.pval[!is.finite(log.pval)]<- maximum
+           },
+           split={
+             log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
+             log.pval[is.na(log.pval)]<-0
+             signs<- 1L})
+    
     return(c(counts=count, 
              log.pval=as.numeric(log.pval),
              signs=as.integer(signs)
@@ -48,16 +48,16 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
     Odds<-((lenA)*(n-lenB-lenC+lenA))/((lenC-lenA)*(lenB-lenA))
     if(Odds == 0){
       Odds <- 1
-      }
+    }
     if(is.na(Odds) == TRUE){ 
       Odds <- 1 
-      } 
+    } 
     if(Odds == Inf){
       Odds<-maximum
-      }
+    }
     if(Odds == -Inf){
       Odds <- 0
-      }
+    }
     logOdds <- log(abs(Odds))*sign(Odds)
     #logOdds[Odds == 0]<- maximum 
     #logOdds[logOdds<0]<- -maximum

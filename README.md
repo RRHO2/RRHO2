@@ -1,5 +1,5 @@
 # RRHO2
-implementation of improved RRHO2, for which all regions in RRHO plots are meaningful.
+Implementation of improved RRHO2, for which all regions in RRHO plots are meaningful.
 
 
 ## Install This Package from github
@@ -22,7 +22,7 @@ install_github("RRHO2/RRHO2")
 
 ## Full tutorial
 
-* http://htmlpreview.github.io/?https://github.com/Caleb-Huo/AWFisher/blob/master/vignettes/AWFisher.html
+* http://htmlpreview.github.io/?https://github.com/RRHO2/RRHO2/blob/master/vignettes/RRHO2.html
 
 ## Short tutorial for circadian pattern detection
 
@@ -37,14 +37,16 @@ Genes <- paste0("Genes",1:nGenes)
 list1_pvalue_1_200 <- runif(nDE,0,0.05)
 list1_pvalue_201_400 <- runif(nDE,0,0.05) 
 list1_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
-list1_DDE <- c(-log10(list1_pvalue_1_200), -log10(list1_pvalue_201_400) * (-1), -log10(list1_pvalue_401_2000) * sample(c(1,-1), length(list1_pvalue_401_2000), replace = TRUE))
+list1_DDE <- c(-log10(list1_pvalue_1_200), -log10(list1_pvalue_201_400) * (-1), 
+	-log10(list1_pvalue_401_2000) * sample(c(1,-1), length(list1_pvalue_401_2000), replace = TRUE))
 
 gene_list1 <- data.frame(Genes=Genes,DDE = list1_DDE, stringsAsFactors = FALSE)
 
 list2_pvalue_1_200 <- runif(nDE,0,0.05)
 list2_pvalue_201_400 <- runif(nDE,0,0.05) 
 list2_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
-list2_DDE <- c(-log10(list2_pvalue_1_200), -log10(list2_pvalue_201_400) * (-1), -log10(list2_pvalue_401_2000) * sample(c(1,-1), length(list2_pvalue_401_2000), replace = TRUE))
+list2_DDE <- c(-log10(list2_pvalue_1_200), -log10(list2_pvalue_201_400) * (-1), 
+	-log10(list2_pvalue_401_2000) * sample(c(1,-1), length(list2_pvalue_401_2000), replace = TRUE))
 
 gene_list2 <- data.frame(Genes=Genes,DDE = list2_DDE, stringsAsFactors = FALSE)
 ```

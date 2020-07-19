@@ -9,7 +9,7 @@ First you need R `devtools` package installed.
 
 ```R
 library(devtools)
-install_github("RRHO2/RRHO2", build_vignettes = TRUE)
+install_github("RRHO2/RRHO2", build_opts = c("--no-resave-data", "--no-manual"))
 ```
 
 

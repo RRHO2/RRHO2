@@ -19,9 +19,9 @@ RRHO2_initialize(list1, list2, stepsize = defaultStepSize(list1, list2),
 
 \item{log10.ind}{Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?}
 
-\item{boundary}{Size of the white strip. 0.1 indicates 10% of the heatmap size.}
+\item{boundary}{Size of the white strip. 0.1 indicates 10\% of the heatmap size.}
 
-\item{method}{method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value}
+\item{method}{Method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value.}
 }
 \value{
 list of result

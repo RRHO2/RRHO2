@@ -7,8 +7,9 @@
 ##' @param stepsize Controls the resolution of the test: how many items between any two overlap tests.
 ##' @param labels A two element vector indicating the label of list1 and list2.
 ##' @param log10.ind Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?
-##' @param boundary Size of the white strip. 0.1 indicates 10% of the heatmap size.
-##' @param method method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value 
+##' @param boundary Size of the white strip. 0.1 indicates 10\% of the heatmap size.
+##' @param method Method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value.
+##' 
 ##' @return list of result
 ##' \item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists##' the overlapping test between the first ith element of the sorted list1, 
 ##' using the Stratified representation.}

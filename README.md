@@ -9,7 +9,7 @@ First you need R `devtools` package installed.
 
 ```R
 library(devtools)
-install_github("RRHO2/RRHO2")
+install_github("RRHO2/RRHO2", build_vignettes = TRUE)
 ```
 
 

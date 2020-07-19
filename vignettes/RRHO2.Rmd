@@ -2,10 +2,14 @@
 title: "RRHO2 Tutorial"
 author: "Caleb Huo"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
 vignette: >
-  %\VignetteIndexEntry{RRHO2}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{RRHO2}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -18,7 +22,7 @@ knitr::opts_chunk$set(
 
 
 
-## Introduction
+# Introduction
 
 Comparing differential expression (DE) patterns across two experimental conditions are commonly encountered in high-throughput data analysis.
 Traditionally, researchers will set a cutoff (p-value=0.05 or FDR 5%).
@@ -71,8 +75,9 @@ library(RRHO2)
 ```
 
 
+# Examples
 
-## Example 1, DE patterns are concordant across two experimental conditions
+## Example 1, DE patterns are concordant across two experimental conditions (p-value)
  
 A total of 2000 genes in both list 1 and list 2.
 In list 1, genes 1-200 are up-regulated; genes 201-400 are down-regulated; the rest of the 1600 genes are noise genes. 
@@ -119,7 +124,7 @@ RRHO2_vennDiagram(RRHO_obj, type="dd")
 
 
 
-## Example 2, DE patterns are discordant across two experimental conditions
+## Example 2, DE patterns are discordant across two experimental conditions (p-value)
  
 A total of 2000 genes in both list 1 and list 2.
 In list 1, genes 1-200 are up-regulated; genes 201-400 are down-regulated; the rest of the 1600 genes are noise genes. 
@@ -168,7 +173,7 @@ RRHO2_vennDiagram(RRHO_obj, type="dd")
 
 
 
-## Example 3, DE patterns are concordant across two experimental conditions
+## Example 3, DE patterns are concordant across two experimental conditions (odds-ratio)
  
 This example is very similar to Example 1, 
 expect using odds ratio instead of p-value to represent overlap.

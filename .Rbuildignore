@@ -1,0 +1,11 @@
+.git
+.git/*
+.git/*/*
+.RData
+.Rhistory
+.gitignore
+src/.DS_Store
+R/.DS-Store
+.DS_Store
+^.*\.Rproj$
+^\.Rproj\.user$

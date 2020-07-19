@@ -1,0 +1,13 @@
+library(devtools)
+
+WD_root <- "/Users/zhuo/Desktop/RRHO2"
+
+setwd(WD_root)
+document()
+install()
+# usethis::use_vignette("RRHO2")
+
+library(RRHO2)
+help(package = "RRHO2")
+
+

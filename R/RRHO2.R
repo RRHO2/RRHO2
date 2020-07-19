@@ -2,21 +2,7 @@
 ##'
 ##' We improved the algorithm such that all four regions of RRHO plot are meaningful
 ##' @title RRHO2
-##' @param list1 data.frame. First column is the element (possibly gene) identifier, and the second is its value on which to sort. For differential gene expression, values are often -log10(P-value) * sign(effect).
-##' @param list2 data.frame. Same as list1.
-##' @param stepsize Controls the resolution of the test: how many items between any two overlap tests.
-##' @param labels Character vector with two elements: the labels of the two lists.
-##' @param plots Logical. Should output plots be returned?
-##' @param outputdir Path name where plots ae returned.
-##' @param BY Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?
-##' @param log10.ind Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?
-##' @param maximum maximum value for a union scale, default is 200.
-##' @param alternative RRHO algorithm "split" gives the new stratified representation, "enrichment" and "two-sided" refer to the original RRHO implementations
-##' @param boundary boundary interval between different quadrant.
-##' @param sort determines whether gene list should be sorted by p-values or effect size
-##' @param method method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value 
-##' @return list of result
-##' \item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists.}
+##' @param RRHO_obj RRHO object. See RRHO2_initialize for details.
 ##' @author Kelly and Caleb
 ##' @export
 ##' @examples
@@ -26,8 +12,8 @@
 ##' list.length <- 2000
 ##' list.names <- paste('Gene',1:list.length, sep='')
 ##' set.seed(15213)
-##' gene.list1<- data.frame(list.names, sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
-##' gene.list2<- data.frame(list.names, sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
+##' gene.list1<- data.frame(Genes=list.names, Value = sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
+##' gene.list2<- data.frame(Genes=list.names, Value = sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
 ##' # Enrichment alternative
 ##' RRHO.example <-  RRHO2(gene.list1, gene.list2, 
 ##'                       labels=c('x','y'), plots=TRUE, outputdir=plotFolder, BY=TRUE, log10.ind=TRUE)
@@ -37,9 +23,9 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
                    labels, plots = FALSE, outputdir = NULL, BY = FALSE,
                    log10.ind = FALSE, maximum=50, boundary = 0.1, res=100, method="fisher", alternative="split")
 {
-  if (length(list1[, 1]) != length(unique(list1[, 1])))
+  if (any(duplicated(list1[,1])))
     stop("Non-unique gene identifier found in list1")
-  if (length(list2[, 1]) != length(unique(list2[, 1])))
+  if (any(duplicated(list1[,2])))
     stop("Non-unique gene identifier found in list2")
   if (plots && (missing(outputdir) || missing(labels)))
     stop("When plots=TRUE, outputdir and labels are required.")
@@ -233,7 +219,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     
     return(result)
     
-  } else {
+  } else if (alternative == "split" ){
     #####Return to split method###
     .hypermat_normal<- numericListOverlap(list1[, 1], list2[, 1], stepsize, method=method, alternative = alternative, maximum = maximum)
     hypermat_normal<- .hypermat_normal$log.pval
@@ -251,7 +237,6 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     lenStrip1 <- round(len1*boundary)
     lenStrip2 <- round(len2*boundary)
     
-    
     boundary1 <- sum(list1[stepList1,2] > 0)
     boundary2 <- sum(list2[stepList2,2] > 0)
     
@@ -260,7 +245,6 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2] <- hypermat_normal[(boundary1+1):len1,(boundary2+1):len2] ## d1d2, quadrant I
     hypermat[1:boundary1,lenStrip2 + (boundary2+1):len2] <- hypermat_flipX[len1:(len1 - boundary1 + 1),(boundary2+1):len2] ## u1d2, quadrant II
     hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2] <- hypermat_flipX[(len1 - boundary1):1,1:boundary2] ## u1d2, quadrant IV
-    
     
     if (log10.ind){
       hypermat <- hypermat * log10(exp(1))
@@ -312,7 +296,7 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
     
     indlist1.du <- seq(1, nlist1, stepsize)[maxind.du[1] - lenStrip1]
     indlist2.du <- seq(1, nlist2, stepsize)[maxind.du[2]]
-    if(is.na(indlist2.du) == TRUE){
+    if(is.na(indlist2.du)){
       indlist2.du<-max(seq(1, nlist2, stepsize))
     }
     genelist.du <- intersect(list1[indlist1.du:nlist1, 1],
@@ -523,7 +507,10 @@ RRHO2 <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
         grid.text(paste("Up",labels[1],"Down",labels[2]), y = 1)
         dev.off()
       })
+    } else {
+      stop(paste0(alternative, "is not a valid alternative method"))
     }
+    
     result$hypermat <- hypermat
     return(result)
   }

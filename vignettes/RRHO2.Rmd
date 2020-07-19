@@ -1,0 +1,213 @@
+---
+title: "RRHO2 Tutorial"
+author: "Caleb Huo"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{RRHO2}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+
+## Introduction
+
+Comparing differential expression (DE) patterns across two experimental conditions are commonly encountered in high-throughput data analysis.
+Traditionally, researchers will set a cutoff (p-value=0.05 or FDR 5%).
+However, adopting these specific cutoffs seems to be arbitary.
+For example, it is possible that there is little overlap at these specific cutoffs,
+but there is a significant overlap at a released/more stringent statistical criteria.
+
+Plaisier et al. proposed the Rank Rank Hypergeometric Overlap (RRHO) method,
+which will examine allpossible cutoffs, 
+and present the significance level of all these overlap using a heatmap approach.
+To be specific, they proposed "enrichment" method and the "two.sided" method to examine and visualize the trend of the overlap of differential expression comparing two experimental conditions.
+Details of these methods can be found in the citation from Plaisier et al. below. 
+The methods are especially successful when the DE patterns are concordant across two experimental conditions (i.e., top significant genes are both upregulated in two conditions, or are both down regulated in two conditions).
+
+Though promising, Cahill et al. noticed that when the DE patterns are discordant (i.e., top significant genes areupregulated in condition 1, but down regulated in condition 2),
+the interpretation of the original RRHO method may become complicated and less intuitive.
+To overcome these difficulties, 
+Cahill et al. proposed a "split" method to better visualize both concordant and discordant DE patterns across two experimental conditions.
+Details can be found in the citation from Cahill et al. below. 
+This new method has been implemented in R package RRHO2.
+Also see Split representation section for interpretation of the RRHO2 results.
+
+
+
+## Citations
+
+- Cahill, K. M., Huo, Z., Tseng, G. C., Logan, R. W., & Seney, M. L. (2018). Improved identification of concordant and discordant gene expression signatures using an updated rank-rank hypergeometric overlap approach. *Scientific reports*, 8(1), 1-11.
+
+- Plaisier, S. B., Taschereau, R., Wong, J. A., & Graeber, T. G. (2010). Rank–rank hypergeometric overlap: identification of statistically significant overlap between gene-expression signatures. *Nucleic acids research*, 38(17), e169-e169.
+
+## Split representation
+
+Interpretation of the Stratified RRHO method. A hotspot in quadrant A indicates overlap in genes up-regulated in study 1 and down-regulated in study 2. A hotspot in quadrant B indicates overlap in genes down-regulated in both studies. A hotspot in quadrant C indicates overlap in genes up-regulated in both studies. A hotspot in quadrant D indicates overlap in genes down-regulated in study 1 and up-regulated in study 2
+
+![Source: Cahill et al., (2018); https://www.nature.com/articles/s41598-018-27903-2/figures/3](https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41598-018-27903-2/MediaObjects/41598_2018_27903_Fig3_HTML.jpg){width=100%}
+
+
+## Install the package
+
+```{r, eval=FALSE}
+library(devtools)
+install_github("RRHO2/RRHO2")
+```
+
+
+## Load the package
+
+```{r setup}
+library(RRHO2)
+```
+
+
+
+## Example 1, DE patterns are concordant across two experimental conditions
+ 
+A total of 2000 genes in both list 1 and list 2.
+In list 1, genes 1-200 are up-regulated; genes 201-400 are down-regulated; the rest of the 1600 genes are noise genes. 
+In list 2, genes 1-200 are up-regulated; genes 201-400 are down-regulated; the rest of the 1600 genes are noise genes.  
+Below is the code to simulate this data, and how to run RRHO2
+
+#### Data simulation
+```{r}
+set.seed(15213)
+nGenes <- 2000
+nDE <- 200
+Genes <- paste0("Genes",1:nGenes)
+
+list1_pvalue_1_200 <- runif(nDE,0,0.05)
+list1_pvalue_201_400 <- runif(nDE,0,0.05) 
+list1_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
+list1_DDE <- c(-log10(list1_pvalue_1_200), -log10(list1_pvalue_201_400) * (-1), -log10(list1_pvalue_401_2000) * sample(c(1,-1), length(list1_pvalue_401_2000), replace = TRUE))
+
+gene_list1 <- data.frame(Genes=Genes,DDE = list1_DDE, stringsAsFactors = FALSE)
+
+list2_pvalue_1_200 <- runif(nDE,0,0.05)
+list2_pvalue_201_400 <- runif(nDE,0,0.05) 
+list2_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
+list2_DDE <- c(-log10(list2_pvalue_1_200), -log10(list2_pvalue_201_400) * (-1), -log10(list2_pvalue_401_2000) * sample(c(1,-1), length(list2_pvalue_401_2000), replace = TRUE))
+
+gene_list2 <- data.frame(Genes=Genes,DDE = list2_DDE, stringsAsFactors = FALSE)
+```
+
+#### Create the RRHO2 object
+```{r}
+RRHO_obj <-  RRHO2_initialize(gene_list1, gene_list2, labels = c("list1", "list2"), log10.ind=TRUE)
+```
+
+#### Visualize the heatmap
+```{r, fig.height = 6, fig.width = 7}
+RRHO2_heatmap(RRHO_obj)
+```
+
+
+#### Visualize the Venn Diagram
+```{r}
+RRHO2_vennDiagram(RRHO_obj, type="dd")
+```
+
+
+
+## Example 2, DE patterns are discordant across two experimental conditions
+ 
+A total of 2000 genes in both list 1 and list 2.
+In list 1, genes 1-200 are up-regulated; genes 201-400 are down-regulated; the rest of the 1600 genes are noise genes. 
+In list 2, genes 1-200 are down-regulated; genes 201-400 are up-regulated; the rest of the 1600 genes are noise genes.  
+Below is the code to simulate this data, and how to run RRHO2
+
+#### Data simulation
+```{r}
+set.seed(15213)
+nGenes <- 2000
+nDE <- 200
+Genes <- paste0("Genes",1:nGenes)
+
+list1_pvalue_1_200 <- runif(nDE,0,0.05)
+list1_pvalue_201_400 <- runif(nDE,0,0.05) 
+list1_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
+list1_DDE <- c(-log10(list1_pvalue_1_200) * (-1), -log10(list1_pvalue_201_400), -log10(list1_pvalue_401_2000) * sample(c(1,-1), length(list1_pvalue_401_2000), replace = TRUE))
+
+gene_list1 <- data.frame(Genes=Genes,DDE = list1_DDE, stringsAsFactors = FALSE)
+
+list2_pvalue_1_200 <- runif(nDE,0,0.05)
+list2_pvalue_201_400 <- runif(nDE,0,0.05) 
+list2_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
+list2_DDE <- c(-log10(list2_pvalue_1_200), -log10(list2_pvalue_201_400) * (-1), -log10(list2_pvalue_401_2000) * sample(c(1,-1), length(list2_pvalue_401_2000), replace = TRUE))
+
+gene_list2 <- data.frame(Genes=Genes,DDE = list2_DDE, stringsAsFactors = FALSE)
+```
+
+#### Create the RRHO2 object
+```{r}
+RRHO_obj <-  RRHO2_initialize(gene_list1, gene_list2, labels = c("list1", "list2"), log10.ind=TRUE)
+```
+
+#### Visualize the heatmap
+```{r, fig.height = 6, fig.width = 7}
+RRHO2_heatmap(RRHO_obj)
+```
+
+
+#### Visualize the Venn Diagram
+```{r}
+RRHO2_vennDiagram(RRHO_obj, type="dd")
+```
+
+
+
+
+
+## Example 3, DE patterns are concordant across two experimental conditions
+ 
+This example is very similar to Example 1, 
+expect using odds ratio instead of p-value to represent overlap.
+
+#### Data simulation
+```{r}
+set.seed(15213)
+nGenes <- 2000
+nDE <- 200
+Genes <- paste0("Genes",1:nGenes)
+
+list1_pvalue_1_200 <- runif(nDE,0,0.05)
+list1_pvalue_201_400 <- runif(nDE,0,0.05) 
+list1_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
+list1_DDE <- c(-log10(list1_pvalue_1_200), -log10(list1_pvalue_201_400) * (-1), -log10(list1_pvalue_401_2000) * sample(c(1,-1), length(list1_pvalue_401_2000), replace = TRUE))
+
+gene_list1 <- data.frame(Genes=Genes,DDE = list1_DDE, stringsAsFactors = FALSE)
+
+list2_pvalue_1_200 <- runif(nDE,0,0.05)
+list2_pvalue_201_400 <- runif(nDE,0,0.05) 
+list2_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
+list2_DDE <- c(-log10(list2_pvalue_1_200), -log10(list2_pvalue_201_400) * (-1), -log10(list2_pvalue_401_2000) * sample(c(1,-1), length(list2_pvalue_401_2000), replace = TRUE))
+
+gene_list2 <- data.frame(Genes=Genes,DDE = list2_DDE, stringsAsFactors = FALSE)
+```
+
+#### Create the RRHO2 object
+```{r}
+RRHO_obj <-  RRHO2_initialize(gene_list1, gene_list2, labels = c("list1", "list2"), log10.ind=TRUE, method = "fisher")
+```
+
+
+#### Visualize the heatmap
+```{r, fig.height = 6, fig.width = 7}
+RRHO2_heatmap(RRHO_obj)
+```
+
+
+#### Visualize the Venn Diagram
+```{r}
+RRHO2_vennDiagram(RRHO_obj, type="dd")
+```

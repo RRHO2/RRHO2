@@ -10,35 +10,7 @@ RRHO2(list1, list2, stepsize = defaultStepSize(list1, list2), labels,
   alternative = "split")
 }
 \arguments{
-\item{list1}{data.frame. First column is the element (possibly gene) identifier, and the second is its value on which to sort. For differential gene expression, values are often -log10(P-value) * sign(effect).}
-
-\item{list2}{data.frame. Same as list1.}
-
-\item{stepsize}{Controls the resolution of the test: how many items between any two overlap tests.}
-
-\item{labels}{Character vector with two elements: the labels of the two lists.}
-
-\item{plots}{Logical. Should output plots be returned?}
-
-\item{outputdir}{Path name where plots ae returned.}
-
-\item{BY}{Logical. Should Benjamini-Yekutieli FDR corrected pvalues be computed?}
-
-\item{log10.ind}{Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?}
-
-\item{maximum}{maximum value for a union scale, default is 200.}
-
-\item{boundary}{boundary interval between different quadrant.}
-
-\item{method}{method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value}
-
-\item{alternative}{RRHO algorithm "split" gives the new stratified representation, "enrichment" and "two-sided" refer to the original RRHO implementations}
-
-\item{sort}{determines whether gene list should be sorted by p-values or effect size}
-}
-\value{
-list of result
-\item{hypermat}{Matrix of -log(pvals) of the test for the first i,j elements of the lists.}
+\item{RRHO_obj}{RRHO object. See RRHO2_initialize for details.}
 }
 \description{
 An improved version for RRHO, which aims to correct the intepretation for top left region (up in x and down in y) nad bottom right region.
@@ -53,8 +25,8 @@ system(paste('mkdir -p', plotFolder))
 list.length <- 2000
 list.names <- paste('Gene',1:list.length, sep='')
 set.seed(15213)
-gene.list1<- data.frame(list.names, sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
-gene.list2<- data.frame(list.names, sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
+gene.list1<- data.frame(Genes=list.names, Value = sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
+gene.list2<- data.frame(Genes=list.names, Value = sample(list.length)*sample(c(1,-1),list.length,replace=TRUE))
 # Enrichment alternative
 RRHO.example <-  RRHO2(gene.list1, gene.list2, 
                       labels=c('x','y'), plots=TRUE, outputdir=plotFolder, BY=TRUE, log10.ind=TRUE)

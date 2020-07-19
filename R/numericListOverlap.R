@@ -1,36 +1,14 @@
 
 ## Compute the overlaps between two *numeric* lists:
-numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", alternative, tol = 0.5, maximum){
+numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", tol = 0.5, offset = 1){
   n<- length(sample1)
   
   overlap_hyper <- function(a,b) {
     count<-as.integer(sum(as.numeric(sample1[1:a] %in% sample2[1:b])))    
     signs<- 1L
-    switch(alternative,
-           enrichment={
-             log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)         
-             signs<- 1L
-           },
-           two.sided={
-             the.mean<- a*b/n
-             signs<- sign(count - the.mean)
-             if(signs < 0){
-               lower<- count 
-               upper<- 2*the.mean - count 
-             } else{
-               lower<- 2*the.mean - count 
-               upper<- count 
-             }
-             log.pval<- -log(phyper(q=lower+tol, m=a, n=n-a+1, k=b, lower.tail=TRUE) +
-                               phyper(q= upper-tol, m=a, n=n-a+1, k=b, lower.tail=FALSE))   
-             #max<-log.pval[is.finite(log.pval)==TRUE]
-             log.pval[!is.finite(log.pval)]<- maximum
-           },
-           split={
-             log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
-             log.pval[is.na(log.pval)]<-0
-             signs<- 1L})
-    
+    log.pval<- -phyper(q=count-1, m=a, n=n-a+1, k=b, lower.tail=FALSE, log.p=TRUE)    
+    #log.pval[is.na(log.pval)]<-0
+
     return(c(counts=count, 
              log.pval=as.numeric(log.pval),
              signs=as.integer(signs)
@@ -45,19 +23,7 @@ numericListOverlap<- function(sample1, sample2, stepsize, method="hyper", altern
     lenC <- length(s2)
     
     #Odds <- lenA/(lenB-lenA)/(lenC-lenA)*(n - lenB - lenC + lenA)
-    Odds<-((lenA)*(n-lenB-lenC+lenA))/((lenC-lenA)*(lenB-lenA))
-    if(Odds == 0){
-      Odds <- 1
-    }
-    if(is.na(Odds) == TRUE){ 
-      Odds <- 1 
-    } 
-    if(Odds == Inf){
-      Odds<-maximum
-    }
-    if(Odds == -Inf){
-      Odds <- 0
-    }
+    Odds<-((lenA+offset)*(n-lenB-lenC+lenA+offset))/((lenC-lenA+offset)*(lenB-lenA+offset))
     logOdds <- log(abs(Odds))*sign(Odds)
     #logOdds[Odds == 0]<- maximum 
     #logOdds[logOdds<0]<- -maximum

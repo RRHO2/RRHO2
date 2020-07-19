@@ -26,6 +26,12 @@ install_github("RRHO2/RRHO2", build_opts = c("--no-resave-data", "--no-manual"))
 
 ## Short tutorial for circadian pattern detection
 
+* Start the package
+
+```
+library(RRHO2)
+```
+
 * Simulate data
 
 ```

@@ -54,7 +54,7 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
 {
   if (any(duplicated(list1[,1])))
     stop("Non-unique gene identifier found in list1")
-  if (any(duplicated(list1[,2])))
+  if (any(duplicated(list2[,1])))
     stop("Non-unique gene identifier found in list2")
   if(!is.null(labels)){
     stopifnot(length(labels) == 2)

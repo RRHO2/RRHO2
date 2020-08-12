@@ -4,9 +4,16 @@
 \alias{RRHO2_initialize}
 \title{RRHO2}
 \usage{
-RRHO2_initialize(list1, list2, stepsize = defaultStepSize(list1, list2),
-  labels = NULL, log10.ind = FALSE, boundary = 0.1,
-  method = "hyper")
+RRHO2_initialize(
+  list1,
+  list2,
+  stepsize = defaultStepSize(list1, list2),
+  labels = NULL,
+  log10.ind = FALSE,
+  multipleTesting = "none",
+  boundary = 0.1,
+  method = "hyper"
+)
 }
 \arguments{
 \item{list1}{data.frame. First column is the element (possibly gene) identifier, and the second is its value on which to sort. For differential gene expression, values are often -log10(P-value) * sign(effect).}
@@ -18,6 +25,8 @@ RRHO2_initialize(list1, list2, stepsize = defaultStepSize(list1, list2),
 \item{labels}{A two element vector indicating the label of list1 and list2.}
 
 \item{log10.ind}{Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?}
+
+\item{multipleTesting}{Three options. none: raw p-value; BH: BH correction; BY: BY correction.}
 
 \item{boundary}{Size of the white strip. 0.1 indicates 10\% of the heatmap size.}
 

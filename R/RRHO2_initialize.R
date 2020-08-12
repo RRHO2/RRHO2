@@ -7,6 +7,7 @@
 ##' @param stepsize Controls the resolution of the test: how many items between any two overlap tests.
 ##' @param labels A two element vector indicating the label of list1 and list2.
 ##' @param log10.ind Logical. Should pvalues be reported and plotted in -log10 scale and not -log scale?
+##' @param multipleTesting Three options. none: raw p-value; BH: BH correction; BY: BY correction.
 ##' @param boundary Size of the white strip. 0.1 indicates 10\% of the heatmap size.
 ##' @param method Method for odds ratio or pvalue representation "fisher" used odds ratio and "hyper" uses p-value.
 ##' 
@@ -49,7 +50,7 @@
 
 
 RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, list2),
-                              labels = NULL, log10.ind = FALSE,
+                              labels = NULL, log10.ind = FALSE, multipleTesting="none", 
                               boundary = 0.1, method="hyper")
 {
   if (any(duplicated(list1[,1])))
@@ -71,10 +72,33 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
   #####Return to stratified method###
   .hypermat_normal<- numericListOverlap(list1[, 1], list2[, 1], stepsize, method=method)
   hypermat_normal<- .hypermat_normal$log.pval
-  
+      
   .hypermat_flipX <- numericListOverlap(rev(list1[, 1]), list2[, 1], stepsize, method=method)
   hypermat_flipX <- .hypermat_flipX$log.pval
-  hypermat_flipX2 <- hypermat_flipX[nrow(hypermat_flipX):1,]
+  #hypermat_flipX2 <- hypermat_flipX[nrow(hypermat_flipX):1,]
+  
+  if(multipleTesting=="none"){
+	  ;
+  } else if(multipleTesting=="BH"){
+      hypermatvec  <- matrix(hypermat_normal,nrow=nrow(hypermat_normal)*ncol(hypermat_normal),ncol=1)
+      hypermat.bhvec  <- p.adjust(exp(-hypermatvec),method="BH")
+      hypermat_normal <- matrix(-log(hypermat.bhvec),nrow=nrow(hypermat_normal),ncol=ncol(hypermat_normal))       	  	
+
+      hypermatvec  <- matrix(hypermat_flipX,nrow=nrow(hypermat_flipX)*ncol(hypermat_flipX),ncol=1)
+      hypermat.bhvec  <- p.adjust(exp(-hypermatvec),method="BH")
+      hypermat_flipX <- matrix(-log(hypermat.bhvec),nrow=nrow(hypermat_normal),ncol=ncol(hypermat_normal))       	  	
+  } else if(multipleTesting=="BY"){
+      hypermatvec  <- matrix(hypermat_normal,nrow=nrow(hypermat_normal)*ncol(hypermat_normal),ncol=1)
+      hypermat.byvec  <- p.adjust(exp(-hypermatvec),method="BY")
+      hypermat_normal <- matrix(-log(hypermat.byvec),nrow=nrow(hypermat_normal),ncol=ncol(hypermat_normal))       	  	
+
+      hypermatvec  <- matrix(hypermat_flipX,nrow=nrow(hypermat_flipX)*ncol(hypermat_flipX),ncol=1)
+      hypermat.byvec  <- p.adjust(exp(-hypermatvec),method="BY")
+      hypermat_flipX <- matrix(-log(hypermat.byvec),nrow=nrow(hypermat_normal),ncol=ncol(hypermat_normal))       	  	
+  } else {
+	  stop("no such multiple testing procedure, please check the multipleTesting argument in the help file for RRHO2_initialize")
+  }
+  
   
   stepList1 <- seq(1, nlist1, stepsize)
   stepList2 <- seq(1, nlist2, stepsize)
@@ -93,7 +117,7 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
   hypermat[lenStrip1 + (boundary1+1):len1,lenStrip2 + (boundary2+1):len2] <- hypermat_normal[(boundary1+1):len1,(boundary2+1):len2] ## d1d2, quadrant I
   hypermat[1:boundary1,lenStrip2 + (boundary2+1):len2] <- hypermat_flipX[len1:(len1 - boundary1 + 1),(boundary2+1):len2] ## u1d2, quadrant II
   hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2] <- hypermat_flipX[(len1 - boundary1):1,1:boundary2] ## u1d2, quadrant IV
-  
+    
   if (log10.ind){
     hypermat <- hypermat * log10(exp(1))
   }
@@ -103,11 +127,15 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
                          na.rm = TRUE) == hypermat, arr.ind = TRUE)
   maxind.dd <- maxind.dd[maxind.dd[,1]>=lenStrip1 + (boundary1+1) & maxind.dd[,1]<=lenStrip1 +len1 & 
                            maxind.dd[,2]>=lenStrip2 + (boundary2+1) & maxind.dd[,2]<=lenStrip2 + len2,]
-  
+  #
+  if(!is.null(dim(maxind.dd))){
+  	maxind.dd <- maxind.dd[1, ]
+  }
+ 
   indlist1.dd <- seq(1, nlist1, stepsize)[maxind.dd[1] - lenStrip1]
   indlist2.dd <- seq(1, nlist2, stepsize)[maxind.dd[2] - lenStrip2]
-  gene_list1_dd <- list1[1:indlist1.dd, 1]
-  gene_list2_dd <- list2[1:indlist2.dd, 1]
+  gene_list1_dd <- list1[indlist1.dd:nlist1, 1]
+  gene_list2_dd <- list2[indlist2.dd:nlist2, 1]
   gene_list_overlap_dd <- intersect(gene_list1_dd,
                                     gene_list2_dd)
   genelist_dd <- list(gene_list1_dd=gene_list1_dd, 
@@ -118,6 +146,9 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
   maxind.uu <- which(max(hypermat[1:boundary1, 1:boundary2],
                          na.rm = TRUE) == hypermat, arr.ind = TRUE)
   maxind.uu <- maxind.uu[maxind.uu[,1]>=1 & maxind.uu[,1]<=boundary1 & maxind.uu[,2]>=1 & maxind.uu[,2]<=boundary2,]
+  if(!is.null(dim(maxind.uu))){
+  	maxind.uu <- maxind.uu[1, ]
+  }
   
   indlist1.uu <- seq(1, nlist1, stepsize)[maxind.uu[1]]
   indlist2.uu <- seq(1, nlist2, stepsize)[maxind.uu[2]]
@@ -134,11 +165,14 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
                          na.rm = TRUE) == hypermat, arr.ind = TRUE)
   #
   maxind.ud <- maxind.ud[maxind.ud[,1]>=1 & maxind.ud[,1]<=boundary1 & maxind.ud[,2]>= lenStrip2 + (boundary2+1) & maxind.ud[,2]<=lenStrip2 + len2,]
+  if(!is.null(dim(maxind.ud))){
+  	maxind.ud <- maxind.ud[1, ]
+  }
   
   indlist1.ud <- seq(1, nlist1, stepsize)[maxind.ud[1]]
   indlist2.ud <- seq(1, nlist2, stepsize)[maxind.ud[2] - lenStrip2]
   gene_list1_ud <- list1[1:indlist1.ud, 1]
-  gene_list2_ud <- list2[1:indlist2.ud, 1]
+  gene_list2_ud <- list2[indlist2.ud:nlist2, 1]
   gene_list_overlap_ud <- intersect(gene_list1_ud,
                                     gene_list2_ud)
   genelist_ud <- list(gene_list1_ud=gene_list1_ud, 
@@ -151,9 +185,13 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
                          na.rm = TRUE) == hypermat, arr.ind = TRUE)
   #
   maxind.du <- maxind.du[maxind.du[,1]>=lenStrip1 + (boundary1+1) & maxind.du[,1]<=lenStrip1 + len1 & maxind.du[,2]>=1 & maxind.du[,2]<=boundary2,]
+  if(!is.null(dim(maxind.du))){
+  	maxind.du <- maxind.du[1, ]
+  }
+  
   indlist1.du <- seq(1, nlist1, stepsize)[maxind.du[1] - lenStrip1]
   indlist2.du <- seq(1, nlist2, stepsize)[maxind.du[2]]
-  gene_list1_du <- list1[1:indlist1.du, 1]
+  gene_list1_du <- list1[indlist1.du:nlist1, 1]
   gene_list2_du <- list2[1:indlist2.du, 1]
   gene_list_overlap_du <- intersect(gene_list1_du,
                                     gene_list2_du)

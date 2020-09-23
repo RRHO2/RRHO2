@@ -60,6 +60,15 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
   if(!is.null(labels)){
     stopifnot(length(labels) == 2)
   }
+	if(any(is.na(list1))){
+		stop("NA value exists in list1, please remove them.")
+	}
+	if(any(is.na(list2))){
+		stop("NA value exists in list2, please remove them.")
+	}
+	if(!all(list1[, 1] %in% list2[, 1]) | !all(list2[, 1] %in% list1[, 1])){
+		stop("The gene names of the two lists must be identical.")
+	}
   
   list1 <- list1[order(list1[, 2], decreasing = TRUE), ]
   list2 <- list2[order(list2[, 2], decreasing = TRUE), ]
@@ -118,6 +127,10 @@ RRHO2_initialize <- function (list1, list2, stepsize = defaultStepSize(list1, li
   hypermat[1:boundary1,lenStrip2 + (boundary2+1):len2] <- hypermat_flipX[len1:(len1 - boundary1 + 1),(boundary2+1):len2] ## u1d2, quadrant II
   hypermat[lenStrip1 + (boundary1+1):len1,1:boundary2] <- hypermat_flipX[(len1 - boundary1):1,1:boundary2] ## u1d2, quadrant IV
     
+	if(any(is.infinite(hypermat[!is.na(hypermat)]))	){
+		warning("Inf was generated because of the multiple testing procedure. I.e., the multiple testing procedure cannot handle extreme small p-values. Suggest to use raw p-value (multipleTesting='none')")
+	}
+	
   if (log10.ind){
     hypermat <- hypermat * log10(exp(1))
   }

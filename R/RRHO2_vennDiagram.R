@@ -83,6 +83,9 @@ RRHO2_vennDiagram <- function(RRHO_obj, type = NULL)
                             ext.text=FALSE,
                             ind=FALSE,
                             cat.dist=0.01)
+  #
+  grid.newpage();
+  #par(mar=c(0,0,0,0))
   grid.draw(venn.plot);
   grid.text(atitle, y = 0.9)
   

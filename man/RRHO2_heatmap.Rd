@@ -4,8 +4,13 @@
 \alias{RRHO2_heatmap}
 \title{RRHO2}
 \usage{
-RRHO2_heatmap(RRHO_obj, maximum = NULL, minimum = NULL,
-  colorGradient = NULL, ...)
+RRHO2_heatmap(
+  RRHO_obj,
+  maximum = NULL,
+  minimum = NULL,
+  colorGradient = NULL,
+  ...
+)
 }
 \arguments{
 \item{RRHO_obj}{RRHO object. See RRHO2_initialize for details.}

@@ -4,16 +4,9 @@
 \alias{RRHO2_initialize}
 \title{RRHO2}
 \usage{
-RRHO2_initialize(
-  list1,
-  list2,
-  stepsize = defaultStepSize(list1, list2),
-  labels = NULL,
-  log10.ind = FALSE,
-  multipleTesting = "none",
-  boundary = 0.1,
-  method = "hyper"
-)
+RRHO2_initialize(list1, list2, stepsize = defaultStepSize(list1, list2),
+  labels = NULL, log10.ind = FALSE, multipleTesting = "none",
+  boundary = 0.1, method = "hyper")
 }
 \arguments{
 \item{list1}{data.frame. First column is the element (possibly gene) identifier, and the second is its value on which to sort. For differential gene expression, values are often -log10(P-value) * sign(effect).}

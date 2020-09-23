@@ -4,6 +4,8 @@
 ##' @title RRHO2
 ##' @param RRHO_obj RRHO object. See RRHO2_initialize for details.
 ##' @param maximum Maximum value of the heatmap.
+##' @param minimum Maximum value of the heatmap.
+##' @param colorGradient A vector of gradient colors. Default NULL is the rainbow color.
 ##' @param ... other parameter for the figure control.
 ##' @author Kelly and Caleb
 ##' @export
@@ -37,7 +39,7 @@
 ##' RRHO2_heatmap(RRHO_obj)
 ##' 
 
-RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL,...)
+RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL, colorGradient = NULL, ...)
 {
   
   hypermat <- RRHO_obj$hypermat
@@ -71,12 +73,15 @@ RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL,...)
     }
   }
   
-  jet.colors  <- colorRampPalette(
-    c("#00007F", "blue", "#007FFF", "cyan", 
-      "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+	if(is.null(colorGradient)){
+	  jet.colors  <- colorRampPalette(
+	    c("#00007F", "blue", "#007FFF", "cyan", 
+	      "#7FFF7F", "yellow", "#FF7F00", "red", "#7F0000"))
+		colorGradient <- jet.colors(101)
+	}
   layout(matrix(c(rep(1, 6), 2), 1, 7, byrow = TRUE))
   
-  image(hypermat, col = jet.colors(101),
+  image(hypermat, col = colorGradient,
         axes = FALSE, ...)
   
   if(!is.null(labels)){
@@ -86,10 +91,10 @@ RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL,...)
   
   if(method == "hyper"){
     atitle <- ifelse(RRHO_obj$log10.ind, "-log10(P-value)", "-log(P-value)")
-    color.bar(jet.colors(101), min = min(0,minimum), max = maximum, nticks = 6, title = atitle)
+    color.bar(colorGradient, min = min(0,minimum), max = maximum, nticks = 6, title = atitle)
   } else if (method == "fisher"){
     atitle <- "log Odds"
-    color.bar(jet.colors(101), min = minimum, max = maximum, nticks = 6, title = atitle)
+    color.bar(colorGradient, min = minimum, max = maximum, nticks = 6, title = atitle)
   } else {
     stop("internal error (1), please report this error to https://github.com/RRHO2/RRHO2/issues")
   }

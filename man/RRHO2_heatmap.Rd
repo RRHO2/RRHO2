@@ -4,12 +4,17 @@
 \alias{RRHO2_heatmap}
 \title{RRHO2}
 \usage{
-RRHO2_heatmap(RRHO_obj, maximum = NULL, minimum = NULL, ...)
+RRHO2_heatmap(RRHO_obj, maximum = NULL, minimum = NULL,
+  colorGradient = NULL, ...)
 }
 \arguments{
 \item{RRHO_obj}{RRHO object. See RRHO2_initialize for details.}
 
 \item{maximum}{Maximum value of the heatmap.}
+
+\item{minimum}{Maximum value of the heatmap.}
+
+\item{colorGradient}{A vector of gradient colors. Default NULL is the rainbow color.}
 
 \item{...}{other parameter for the figure control.}
 }

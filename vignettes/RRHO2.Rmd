@@ -116,12 +116,46 @@ RRHO_obj <-  RRHO2_initialize(gene_list1, gene_list2, labels = c("list1", "list2
 RRHO2_heatmap(RRHO_obj)
 ```
 
+#### Get the gene lists (down regulation in list1 and down regulation in list 2) that provide the most significant overlap (option dd)
 
-#### Visualize the Venn Diagram
-```{r}
+options:
+
+- dd: down regulation in list1 and down regulation in list 2
+- uu: up regulation in list1 and up regulation in list 2
+- du: down regulation in list1 and up regulation in list 2
+- ud: up regulation in list1 and down regulation in list 2
+
+```{r, eval = FALSE}
+## gene lists (down regulation in list1 and down regulation in list 2) that provide the most significant overlap
+RRHO_obj$genelist_dd
+
+## down regulation genes in list1
+RRHO_obj$genelist_dd$gene_list1_dd
+
+## down regulation genes in list2
+RRHO_obj$genelist_dd$gene_list2_dd
+
+## overlap between down regulation genes in list1 and list2
+RRHO_obj$genelist_dd$gene_list_overlap_dd
+
+#### Visualize by Venn Diagram
 RRHO2_vennDiagram(RRHO_obj, type="dd")
 ```
 
+To view the head of them
+```{r}
+## down regulation genes in list1
+head(RRHO_obj$genelist_dd$gene_list1_dd)
+
+## down regulation genes in list2
+head(RRHO_obj$genelist_dd$gene_list2_dd)
+
+## overlap between down regulation genes in list1 and list2
+head(RRHO_obj$genelist_dd$gene_list_overlap_dd)
+
+#### Visualize by Venn Diagram
+RRHO2_vennDiagram(RRHO_obj, type="dd")
+```
 
 
 ## Example 2, DE patterns are discordant across two experimental conditions (p-value)
@@ -164,13 +198,46 @@ RRHO2_heatmap(RRHO_obj)
 ```
 
 
-#### Visualize the Venn Diagram
-```{r}
-RRHO2_vennDiagram(RRHO_obj, type="dd")
+#### Get the gene lists (down regulation in list1 and up regulation in list 2) that provide the most significant overlap (option du)
+
+options:
+
+- dd: down regulation in list1 and down regulation in list 2
+- uu: up regulation in list1 and up regulation in list 2
+- du: down regulation in list1 and up regulation in list 2
+- ud: up regulation in list1 and down regulation in list 2
+
+```{r, eval = FALSE}
+## gene lists (down regulation in list1 and up regulation in list 2) that provide the most significant overlap
+RRHO_obj$genelist_du
+
+## down regulation genes in list1
+RRHO_obj$genelist_du$gene_list1_du
+
+## down regulation genes in list2
+RRHO_obj$genelist_du$gene_list2_du
+
+## overlap between down regulation genes in list1 and list2
+RRHO_obj$genelist_du$gene_list_overlap_du
+
+#### Visualize by Venn Diagram
+RRHO2_vennDiagram(RRHO_obj, type="du")
 ```
 
+To view the head of them
+```{r}
+## down regulation genes in list1
+head(RRHO_obj$genelist_du$gene_list1_du)
 
+## down regulation genes in list2
+head(RRHO_obj$genelist_du$gene_list2_du)
 
+## overlap between down regulation genes in list1 and list2
+head(RRHO_obj$genelist_du$gene_list_overlap_du)
+
+#### Visualize by Venn Diagram
+RRHO2_vennDiagram(RRHO_obj, type="du")
+```
 
 
 ## Example 3, DE patterns are concordant across two experimental conditions (odds-ratio)

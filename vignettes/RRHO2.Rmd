@@ -91,10 +91,13 @@ nGenes <- 2000
 nDE <- 200
 Genes <- paste0("Genes",1:nGenes)
 
-list1_pvalue_1_200 <- runif(nDE,0,0.05)
-list1_pvalue_201_400 <- runif(nDE,0,0.05) 
-list1_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1)
-list1_DDE <- c(-log10(list1_pvalue_1_200), -log10(list1_pvalue_201_400) * (-1), -log10(list1_pvalue_401_2000) * sample(c(1,-1), length(list1_pvalue_401_2000), replace = TRUE))
+## for up-regulated genes, use -log10(pvalue) * 1; for down-regulated genes, use -log10(pvalue) * (-1)
+list1_pvalue_1_200 <- runif(nDE,0,0.05) ## up-regulated genes
+list1_pvalue_201_400 <- runif(nDE,0,0.05) ## down-regulated genes
+list1_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1) ## non-changed genes
+list1_DDE <- c(-log10(list1_pvalue_1_200), 
+    -log10(list1_pvalue_201_400) * (-1), 
+    -log10(list1_pvalue_401_2000) * sample(c(1,-1), length(list1_pvalue_401_2000), replace = TRUE))
 
 gene_list1 <- data.frame(Genes=Genes,DDE = list1_DDE, stringsAsFactors = FALSE)
 

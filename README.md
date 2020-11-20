@@ -32,6 +32,13 @@ install_github("RRHO2/RRHO2", build_opts = c("--no-resave-data", "--no-manual"))
 library(RRHO2)
 ```
 
+* Input data format
+	- The input gene list should have 2 columns, 1st column is the gene symbol, 2nd column is the input score.
+	- The score should be calculated as -log10(pvalue) * sign(effectSize)
+	- NA is not allowed
+	- Gene symbols of the two gene lists should be identical, but don't have to be in the same order
+
+
 * Simulate data
 
 ```
@@ -40,7 +47,9 @@ nGenes <- 2000
 nDE <- 200
 Genes <- paste0("Genes",1:nGenes)
 
-## for up-regulated genes, use -log10(pvalue) * 1; for down-regulated genes, use -log10(pvalue) * (-1)
+## For up-regulated genes, the input score should be calculated using-log10(pvalue) * 1;
+## For down-regulated genes, the input score should be calculated using-log10(pvalue) * (-1);
+
 list1_pvalue_1_200 <- runif(nDE,0,0.05) ## up-regulated genes
 list1_pvalue_201_400 <- runif(nDE,0,0.05) ## down-regulated genes
 list1_pvalue_401_2000 <- runif(nGenes - 2 * nDE,0,1) ## non-changed genes

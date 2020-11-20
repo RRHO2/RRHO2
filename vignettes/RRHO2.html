@@ -376,7 +376,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">RRHO2 Tutorial</h1>
 <h4 class="author">Caleb Huo</h4>
-<h4 class="date">17 November, 2020</h4>
+<h4 class="date">19 November, 2020</h4>
 
 </div>
 
@@ -387,6 +387,7 @@ $(document).ready(function () {
 <li><a href="#split-representation"><span class="toc-section-number">1.2</span> Split representation</a></li>
 <li><a href="#install-the-package"><span class="toc-section-number">1.3</span> Install the package</a></li>
 <li><a href="#load-the-package"><span class="toc-section-number">1.4</span> Load the package</a></li>
+<li><a href="#format-of-the-input-data"><span class="toc-section-number">1.5</span> Format of the input data</a></li>
 </ul></li>
 <li><a href="#examples"><span class="toc-section-number">2</span> Examples</a><ul>
 <li><a href="#example-1-de-patterns-are-concordant-across-two-experimental-conditions-p-value"><span class="toc-section-number">2.1</span> Example 1, DE patterns are concordant across two experimental conditions (p-value)</a></li>
@@ -428,6 +429,15 @@ install_github(&quot;RRHO2/RRHO2&quot;)</code></pre>
 #&gt; Loading required package: grid
 #&gt; Loading required package: futile.logger</code></pre>
 </div>
+<div id="format-of-the-input-data" class="section level2">
+<h2><span class="header-section-number">1.5</span> Format of the input data</h2>
+<ul>
+<li>The input gene list should have 2 columns, 1st column is the gene symbol, 2nd column is the input score.</li>
+<li>The score should be calculated as -log10(pvalue) * sign(effectSize)</li>
+<li>NA is not allowed</li>
+<li>Gene symbols of the two gene lists should be identical, but don’t have to be in the same order</li>
+</ul>
+</div>
 </div>
 <div id="examples" class="section level1">
 <h1><span class="header-section-number">2</span> Examples</h1>
@@ -442,7 +452,8 @@ nGenes &lt;- 2000
 nDE &lt;- 200
 Genes &lt;- paste0(&quot;Genes&quot;,1:nGenes)
 
-## for up-regulated genes, use -log10(pvalue) * 1; for down-regulated genes, use -log10(pvalue) * (-1)
+## For up-regulated genes, the input score should be calculated using-log10(pvalue) * 1;
+## For down-regulated genes, the input score should be calculated using-log10(pvalue) * (-1);
 list1_pvalue_1_200 &lt;- runif(nDE,0,0.05) ## up-regulated genes
 list1_pvalue_201_400 &lt;- runif(nDE,0,0.05) ## down-regulated genes
 list1_pvalue_401_2000 &lt;- runif(nGenes - 2 * nDE,0,1) ## non-changed genes

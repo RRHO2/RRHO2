@@ -92,7 +92,7 @@ RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL, colorGradient = N
   
   if(method == "hyper"){
     atitle <- ifelse(RRHO_obj$log10.ind, "-log10(P-value)", "-log(P-value)")
-    color.bar(colorGradient, min = min(0,minimum), max = maximum, nticks = 6, title = atitle)
+    color.bar(colorGradient, min = minimum, max = maximum, nticks = 6, title = atitle)
   } else if (method == "fisher"){
     atitle <- "log Odds"
     color.bar(colorGradient, min = minimum, max = maximum, nticks = 6, title = atitle)

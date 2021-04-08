@@ -81,7 +81,8 @@ RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL, colorGradient = N
 	}
   layout(matrix(c(rep(1, 6), 2), 1, 7, byrow = TRUE))
   
-  image(hypermat, col = colorGradient,
+  breaks <- seq(minimum,maximum,length.out = length(colorGradient) + 1)
+  image(hypermat, col = colorGradient,breaks=breaks,
         axes = FALSE, ...)
   
   if(!is.null(labels)){

@@ -57,6 +57,10 @@ RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL, colorGradient = N
   } else {
     minimum <- min(hypermat,na.rm=TRUE)
   }
+    
+  if(minimum > maximum){
+	  stop("minimum > maximum, please check these function arguments!")
+  }
   
   color.bar <- function(lut, min, max=-min, 
                         nticks=11, 

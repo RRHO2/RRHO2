@@ -1,10 +1,10 @@
-##' An improved version for RRHO, which aims to correct the intepretation for top left region (up in x and down in y) nad bottom right region.
+##' An improved version for RRHO, which aims to correct the intepretation for top left region (up in x and down in y) and bottom right region (down in x and up in y).
 ##'
-##' We improved the algorithm such that all four regions of RRHO plot are meaningful
+##' We improved the algorithm such that all four regions of RRHO plot are meaningful.
 ##' @title RRHO2
 ##' @param RRHO_obj RRHO object. See RRHO2_initialize for details.
 ##' @param maximum Maximum value of the heatmap.
-##' @param minimum Maximum value of the heatmap.
+##' @param minimum Minimum value of the heatmap.
 ##' @param colorGradient A vector of gradient colors. Default NULL is the rainbow color.
 ##' @param ... other parameter for the figure control.
 ##' @author Kelly and Caleb
@@ -39,13 +39,16 @@
 ##' RRHO2_heatmap(RRHO_obj)
 ##' 
 
-RRHO2_heatmap <- function(RRHO_obj, maximum=NULL,minimum=NULL, colorGradient = NULL, ...)
+RRHO2_heatmap <- function(RRHO_obj, maximum=NULL, minimum=NULL, colorGradient=NULL, labels=NULL, ...)
 {
   
   hypermat <- RRHO_obj$hypermat
-  labels <- RRHO_obj$labels
   method <- RRHO_obj$method
   
+  if(is.null(labels)){
+    labels <- RRHO_obj$labels	
+  }
+	
   if(!is.null(maximum)){
     hypermat[hypermat>maximum] <- maximum
   } else {
